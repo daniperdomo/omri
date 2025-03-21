@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import categoriasCubitt from "../jsons/categoriasCubitt.json"
 import ProductGrid from "../components/ProductGrid"
 import { debounce } from "lodash"
-import PantallaCarga from "../components/PantallaCarga"
+import PantallaCarga from "../components/PantallaCarga";
 
 const Cubitt = () => {
   const [productos, setProductos] = useState([])
