@@ -19,6 +19,13 @@
       "destination": "/server/server.js"
     }
   ],
+  "redirects": [
+    {
+      "source": "omrivzla.com",
+      "destination": "https://www.omrivzla.com",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
