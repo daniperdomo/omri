@@ -1,0 +1,9 @@
+/* src/styles.css */
+@font-face {
+    font-family: 'Amblas';
+    src: url('../fonts/amblas.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Puedes agregar más estilos aquí si lo deseas */

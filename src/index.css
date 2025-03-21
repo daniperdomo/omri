@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Amblas';
+    src: url('./fonts/Amblas.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+    --font-amblas: Amblas, "sans-serif";
+}
