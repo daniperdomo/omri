@@ -91,7 +91,7 @@ const Nosotros = () => {
               Sobre nosotros
             </h1>
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4">
-              En Omri, te ofrecemos productos originales y de alta calidad a 
+              En Omri, les ofrecemos productos originales y de alta calidad a 
               nuestros clientes.
             </p>
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
