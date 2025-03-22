@@ -11,7 +11,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const corsOptions = {
-    origin: ["https://www.omrivzla.com/"]
+    origin: ["http://localhost:5173/"]
 }
 
 app.use(cors(corsOptions))

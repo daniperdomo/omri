@@ -23,7 +23,7 @@ const ProductDetail = () => {
   );
 
   useEffect(() => {
-    fetch(`/api/productos/${cod_producto}`)
+    fetch(`http://localhost:8081/api/productos/${cod_producto}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error en la respuesta del servidor");
@@ -39,7 +39,7 @@ const ProductDetail = () => {
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
-        return fetch(`/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
+        return fetch(`http://localhost:8081/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
       })
       .then((response) => {
         if (!response.ok) {
