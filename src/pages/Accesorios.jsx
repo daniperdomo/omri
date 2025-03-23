@@ -14,7 +14,7 @@ const Accesorios = () => {
   const fetchProductos = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`http://localhost:8081/api/productos/accesorios`)
+      const response = await fetch(`/api/productos/accesorios`)
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor")
       }
