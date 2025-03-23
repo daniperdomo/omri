@@ -66,7 +66,7 @@ const FAQItem = ({ question, answer }) => {
 const faqData = [
   {
     question: "¿Venden productos originales?",
-    answer: "Sí, en Omri queremos ofrecer productos de la mayor calidad posible."
+    answer: "Sí, en Omri contamos con productos de la mayor calidad posible."
   },
   {
     question: "¿Los productos Cubitt incluyen garantía?",

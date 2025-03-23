@@ -12,7 +12,7 @@ const Nav = () => {
     const [click, setClick] = useState(false)
 
     useEffect(() => {
-        fetch(`/api/productos`)
+        fetch(`http://localhost:8081/api/productos`)
             .then(response => response.json())
             .then(data => {
                 sessionStorage.setItem('searchResults', JSON.stringify(data))
@@ -21,7 +21,7 @@ const Nav = () => {
                 console.error('Error fetching products:', error)
             })
 
-        fetch(`/api/categoria`)
+        fetch(`http://localhost:8081/api/categoria`)
             .then(response => response.json())
             .then(data => {
                 setCategories(data)
