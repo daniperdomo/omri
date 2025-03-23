@@ -15,7 +15,7 @@ const Menu = () => {
     {
       id: 2,
       title: "Accesorios Apple",
-      description: "Contamos con accesorios originales de la marca Apple.",
+      description: "Ven y busca cargadores, cables y audífonos para tus dispositivos Apple.",
       image: "/images/home/menu/menuapple.webp",
       link: "/accesorios",
     },
@@ -52,7 +52,7 @@ const Menu = () => {
           }}
         >
           {/* Overlay para oscurecer la imagen */}
-          <div className="absolute inset-0 bg-black bg-opacity-40 hover:bg-opacity-30 transition-all duration-300"></div>
+          <div className="absolute inset-0 bg-black bg-opacity-25 transition-all duration-300"></div>
 
           {/* Contenido del cuadro */}
           <div className="relative z-10 p-6">

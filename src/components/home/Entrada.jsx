@@ -9,7 +9,7 @@ const Entrada = () => {
   const slide = {
     id: 1,
     title: "¡Bienvenido a la web de Omri!",
-    subtitle: "Consulta la disponibilidad e información de los productos que amas.",
+    subtitle: "Consulta la disponibilidad e información de todos los productos.",
     image: "/images/home/slider/prueba2.webp", // Cambia esta ruta por la de tu imagen
   };
 
@@ -55,7 +55,7 @@ const Entrada = () => {
           }}
         >
           {/* Overlay oscuro */}
-          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center">
             {/* Texto centrado */}
             <div className="text-center text-white px-4">
               <h1 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-3xl md:text-4xl font-bold">

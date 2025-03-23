@@ -6,4 +6,7 @@
     font-style: normal;
 }
 
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra negra con opacidad */
+  }
 /* Puedes agregar más estilos aquí si lo deseas */
