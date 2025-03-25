@@ -21,7 +21,7 @@
   ],
   "headers": [
     {
-      "source": "/assets/.*\\.[a-f0-9]+\\.(js|css|jpg|png|svg|gif|webp|avif)",
+      "source": "/assets/:file.:hash.:ext(js|css|jpg|png|svg|gif|webp|avif)",
       "headers": [
         {
           "key": "Cache-Control",
