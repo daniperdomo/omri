@@ -75,7 +75,7 @@ const ProductCard = ({ product, allProducts }) => {
         {availability ? (
           <span className="text-sm font-semibold text-green-600">Disponible</span>
         ) : (
-          <span className="text-sm font-semibold text-red-600">No disponible</span>
+          <span className="text-sm font-semibold text-red-600">¡Solicítalo!</span>
         )}
 
         {/* Círculos de colores (solo si no es un accesorio) */}

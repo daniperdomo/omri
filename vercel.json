@@ -4,21 +4,14 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
     },
     {
       "src": "server/server.js",
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/server/server.js"
-    }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/server/server.js" }],
   "redirects": [
     {
       "source": "omrivzla.com",
@@ -28,11 +21,20 @@
   ],
   "headers": [
     {
+      "source": "/assets/:file.:hash.:ext(js|css|jpg|png|svg|gif|webp|avif)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
+          "value": "no-cache"
         }
       ]
     }
