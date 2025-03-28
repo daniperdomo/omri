@@ -1,64 +1,92 @@
-import React, { useState, useEffect } from "react"
-import categoriasAccesorios from "../jsons/categoriasAccesorios.json"
-import ProductGrid from "../components/ProductGrid"
-import PantallaCarga from "../components/PantallaCarga" // Importa el componente PantallaCarga
+import React, { useState, useEffect } from "react";
+import categoriasAccesorios from "../jsons/categoriasAccesorios.json";
+import ProductGrid from "../components/ProductGrid";
+import PantallaCarga from "../components/PantallaCarga";
 
 const Accesorios = () => {
-  const [productos, setProductos] = useState([])
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("")
-  const [marcaSeleccionada, setMarcaSeleccionada] = useState("")
-  const [precioMin, setPrecioMin] = useState("")
-  const [precioMax, setPrecioMax] = useState("")
-  const [loading, setLoading] = useState(true)
+  const [productos, setProductos] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
+  const [precioMin, setPrecioMin] = useState("");
+  const [precioMax, setPrecioMax] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState({});
+
+  // Precargar imágenes de categorías
+  useEffect(() => {
+    const loadImages = async () => {
+      const imagePromises = categoriasAccesorios.map((category) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = category.image;
+          img.onload = () => {
+            setLoadedImages((prev) => ({ ...prev, [category.id]: true }));
+            resolve();
+          };
+          img.onerror = resolve; // Continuar aunque falle una imagen
+        });
+      });
+
+      await Promise.all(imagePromises);
+      setImagesLoaded(true);
+    };
+
+    loadImages();
+  }, []);
 
   const fetchProductos = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await fetch(`/api/productos/accesorios`)
+      const response = await fetch(`/api/productos/accesorios`);
       if (!response.ok) {
-        throw new Error("Error en la respuesta del servidor")
+        throw new Error("Error en la respuesta del servidor");
       }
-      const data = await response.json()
-      setProductos(data)
-      sessionStorage.setItem("productosAccesorios", JSON.stringify(data))
+      const data = await response.json();
+      setProductos(data);
+      sessionStorage.setItem("productosAccesorios", JSON.stringify(data));
     } catch (error) {
-      console.error("Error leyendo productos:", error)
+      console.error("Error leyendo productos:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productosAccesorios")
+    const productosGuardados = sessionStorage.getItem("productosAccesorios");
     if (productosGuardados) {
-      setProductos(JSON.parse(productosGuardados))
-      setLoading(false)
+      setProductos(JSON.parse(productosGuardados));
+      setLoading(false);
     } else {
-      fetchProductos()
+      fetchProductos();
     }
-  }, [])
+  }, []);
 
-  const marcasUnicas = [...new Set(productos.map((producto) => producto.cod_marca))]
+  const marcasUnicas = [...new Set(productos.map((producto) => producto.cod_marca))];
 
   const productosFiltrados = productos.filter((producto) => {
-    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
-    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada
+    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
+    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada;
     const cumplePrecio =
       (!precioMin || producto.precio >= parseFloat(precioMin)) &&
-      (!precioMax || producto.precio <= parseFloat(precioMax))
-    return cumpleCategoria && cumpleMarca && cumplePrecio
-  })
+      (!precioMax || producto.precio <= parseFloat(precioMax));
+    return cumpleCategoria && cumpleMarca && cumplePrecio;
+  });
 
   // Ordenar productos filtrados por marca
-  const productosOrdenados = productosFiltrados.sort((a, b) => {
-    if (a.cod_marca < b.cod_marca) return -1
-    if (a.cod_marca > b.cod_marca) return 1
-    return 0
-  })
+  const productosOrdenados = [...productosFiltrados].sort((a, b) => {
+    if (a.cod_marca < b.cod_marca) return -1;
+    if (a.cod_marca > b.cod_marca) return 1;
+    return 0;
+  });
 
   const handleCategoriaClick = (cod_categoria) => {
-    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria))
-  }
+    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
+  };
+
+  // Calcular si todas las imágenes de categorías están cargadas
+  const allCategoryImagesLoaded = imagesLoaded && 
+    categoriasAccesorios.every(category => loadedImages[category.id]);
 
   return (
     <div className="py-8 bg-gray-100">
@@ -69,6 +97,7 @@ const Accesorios = () => {
 
         <h2 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-2xl text-gray-700 mb-6 text-left">Categorías</h2>
 
+        {/* Contenedor de categorías con placeholders de carga */}
         <div className="overflow-x-auto scrollbar-hide whitespace-nowrap mb-12 lg:overflow-x-visible lg:whitespace-normal">
           <div className="inline-flex space-x-4 lg:flex lg:flex-nowrap lg:space-x-4">
             {categoriasAccesorios.map((category) => (
@@ -78,14 +107,25 @@ const Accesorios = () => {
                 className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
                   categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover" : ""
                 }`}
+                disabled={!loadedImages[category.id]} // Deshabilitar botón mientras carga
               >
+                {!loadedImages[category.id] && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                )}
                 <img
                   src={category.image}
                   alt={category.title}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover transition-opacity duration-300 ${
+                    !loadedImages[category.id] ? "opacity-0" : "opacity-100"
+                  }`}
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-center">
-                  <h3 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-sm md:text-lg font-bold text-white text-center">
+                  <h3 
+                    style={{ fontFamily: 'Amblas, sans-serif' }} 
+                    className="text-sm md:text-lg font-bold text-white text-center"
+                  >
                     {category.title}
                   </h3>
                 </div>
@@ -94,6 +134,7 @@ const Accesorios = () => {
           </div>
         </div>
 
+        {/* Filtros */}
         <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
           <h2 className="text-xl text-gray-700">Filtrar por:</h2>
 
@@ -143,14 +184,15 @@ const Accesorios = () => {
           </div>
         </div>
 
-        {loading ? (
-          <PantallaCarga /> 
+        {/* Mostrar contenido solo cuando todo esté listo */}
+        {(!allCategoryImagesLoaded || loading) ? (
+          <PantallaCarga />
         ) : (
           <ProductGrid productos={productosOrdenados} />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Accesorios
+export default Accesorios;
