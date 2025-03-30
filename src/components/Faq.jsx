@@ -1,8 +1,7 @@
 import React from "react";
 import { Disclosure } from "@headlessui/react";
-import { motion, AnimatePresence } from "framer-motion"; // Importa Framer Motion
+import { motion, AnimatePresence } from "framer-motion";
 
-// Componente FAQItem (interno a Faq.jsx)
 const FAQItem = ({ question, answer }) => {
   const lineas = answer
     ? answer.split("\n").filter((line) => line.trim() !== "")
@@ -32,16 +31,15 @@ const FAQItem = ({ question, answer }) => {
             </svg>
           </Disclosure.Button>
 
-          {/* Usamos AnimatePresence para animar la entrada y salida del panel */}
           <AnimatePresence>
             {open && (
               <Disclosure.Panel
                 static
                 as={motion.div}
-                initial={{ opacity: 0, height: 0 }} // Estado inicial: invisible y sin altura
-                animate={{ opacity: 1, height: "auto" }} // Estado final: visible y con altura automática
-                exit={{ opacity: 0, height: 0 }} // Estado al cerrar: invisible y sin altura
-                transition={{ duration: 0.3, ease: "easeInOut" }} // Duración y tipo de transición
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="text-gray-700 text-lg overflow-hidden"
               >
                 {lineas.length > 0 ? (
@@ -62,7 +60,6 @@ const FAQItem = ({ question, answer }) => {
   );
 };
 
-// Datos de las preguntas frecuentes
 const faqData = [
   {
     question: "¿Venden productos originales?",
@@ -72,10 +69,19 @@ const faqData = [
     question: "¿Los productos Cubitt incluyen garantía?",
     answer: "Al realizar la compra de un producto de la marca Cubitt, le hacemos entrega de una garantía por defecto de fábrica, la duración es de 1 año."
   },
-  // Añade más preguntas y respuestas según sea necesario
+  {
+    question: "¿Puedo reservar productos que actualmente están agotados?",
+    answer: `Sí, ofrecemos un servicio de reserva para productos temporalmente agotados. Para solicitarlo: 
+    
+    Contáctenos a través de WhatsApp, email o nuestro formulario web
+    Indique el producto deseado y cantidad
+    Le informaremos el tiempo estimado de reposición
+    Podrá realizar un prepago para garantizar su reserva
+    
+    Una vez recibido el producto, le notificaremos inmediatamente para coordinar la entrega o envío.`
+  }
 ];
 
-// Componente Faq
 const Faq = () => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-lg">
@@ -86,6 +92,24 @@ const Faq = () => {
         {faqData.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />
         ))}
+      </div>
+
+      {/* Descargo de responsabilidad para Apple */}
+      <div className="mt-8 pt-4 border-t border-gray-200">
+        <p className="text-xs text-gray-500">
+          Apple, Mac, Macintosh, MacBook, iPhone, iPad, iPod, iTunes, Apple Watch, 
+          AirPods y el logotipo de Apple son marcas comerciales de Apple Inc., 
+          registradas en EE. UU. y otros países. Omri es un distribuidor independiente 
+          y no está afiliado, patrocinado ni respaldado por Apple Inc. Los productos 
+          Apple mencionados son compatibles con nuestros accesorios, pero no implican 
+          aprobación o asociación con Apple Inc.
+        </p>
+        <p className="text-xs text-gray-500 mt-2">
+          El uso de las marcas comerciales de Apple en este sitio web es únicamente 
+          con fines descriptivos para indicar compatibilidad con productos Apple. 
+          No afirmamos ser un distribuidor autorizado de Apple ni tener ninguna 
+          afiliación con Apple Inc.
+        </p>
       </div>
     </div>
   );
