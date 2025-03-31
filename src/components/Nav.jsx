@@ -1,103 +1,103 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import NavMovil from './NavMovil';
+import React, { useState, useEffect, useRef } from 'react'
+import { FaSearch } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import NavMovil from './NavMovil'
 
 const Nav = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [showSearch, setShowSearch] = useState(false);
-    const [categories, setCategories] = useState([]);
-    const searchRef = useRef(null);
-    const dropdownRef = useRef(null);
-    const [click, setClick] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults] = useState([])
+    const [showSearch, setShowSearch] = useState(false)
+    const [categories, setCategories] = useState([])
+    const searchRef = useRef(null)
+    const [click, setClick] = useState(false)
 
+    // Efecto para detectar clics fuera de la barra de búsqueda (solo escritorio)
     useEffect(() => {
-        // Cargar productos
-        fetch(`/api/productos`)
-            .then(response => response.json())
-            .then(data => {
-                sessionStorage.setItem('searchResults', JSON.stringify(data));
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
-            });
-
-        // Cargar categorías
-        fetch(`/api/categoria`)
-            .then(response => response.json())
-            .then(data => {
-                setCategories(data);
-            })
-            .catch(error => {
-                console.error('Error fetching categorias:', error);
-            });
-
-        // Manejador de clicks fuera del buscador
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
-                searchRef.current && !searchRef.current.contains(event.target)) {
-                setSearchTerm('');
-                setSearchResults([]);
+            if (window.innerWidth >= 1024 && 
+                searchRef.current && 
+                !searchRef.current.contains(event.target)) {
+                setSearchResults([])
+                setSearchTerm('')
             }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-
-    const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value);
-
-        if (!value) {
-            setSearchResults([]);
-            return;
         }
 
-        const cachedResults = sessionStorage.getItem('searchResults');
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
+    useEffect(() => {
+        fetch(`http://localhost:8081/api/productos`)
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('searchResults', JSON.stringify(data))
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error)
+            })
+
+        fetch(`http://localhost:8081/api/categoria`)
+            .then(response => response.json())
+            .then(data => {
+                setCategories(data)
+            })
+            .catch(error => {
+                console.error('Error fetching categorias:', error)
+            })
+    }, [])
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value
+        setSearchTerm(value)
+
+        if (!value) {
+            setSearchResults([])
+            return
+        }
+
+        const cachedResults = sessionStorage.getItem('searchResults')
         if (cachedResults) {
-            const results = JSON.parse(cachedResults);
+            const results = JSON.parse(cachedResults)
 
             const filteredResults = results.filter(product =>
                 product.nombre.toLowerCase().includes(value.toLowerCase()) ||
                 product.modelo.toLowerCase().includes(value.toLowerCase())
-            );
+            )
 
             const filteredCategories = categories.filter(category =>
                 category.descripcion.toLowerCase().includes(value.toLowerCase())
-            );
+            )
 
-            const uniqueCategoryCodes = new Set(filteredCategories.map(category => category.cod_categoria));
+            const uniqueCategoryCodes = new Set(filteredCategories.map(category => category.cod_categoria))
 
             const productsFromCategories = results.filter(product =>
                 uniqueCategoryCodes.has(product.cod_categoria)
-            );
+            )
 
-            const combinedResults = [...filteredResults, ...productsFromCategories];
+            const combinedResults = [...filteredResults, ...productsFromCategories]
 
-            const uniqueResults = [];
-            const seenNames = new Set();
+            const uniqueResults = []
+            const seenNames = new Set()
 
             combinedResults.forEach(product => {
                 if (!seenNames.has(product.nombre)) {
-                    seenNames.add(product.nombre);
-                    uniqueResults.push(product);
+                    seenNames.add(product.nombre)
+                    uniqueResults.push(product)
                 }
-            });
+            })
 
-            setSearchResults(uniqueResults);
+            setSearchResults(uniqueResults)
         }
-    };
+    }
 
     const handleLogoClick = () => {
-        setShowSearch(false);
-        setClick(false);
-        setSearchTerm('');
-        setSearchResults([]);
-    };
+        setShowSearch(false)
+        setClick(false)
+        setSearchResults([])
+        setSearchTerm('')
+    }
 
     return (
         <nav className="bg-white shadow-lg top-0 left-0 w-full z-50">
@@ -155,18 +155,15 @@ const Nav = () => {
                             />
                             <FaSearch className="absolute right-3 top-3 text-gray-400" />
                             {searchTerm && searchResults.length > 0 && (
-                                <div 
-                                    className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg"
-                                    ref={dropdownRef}
-                                >
+                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg">
                                     <ul>
                                         {searchResults.slice(0, 4).map(product => (
                                             <li key={product.cod_producto} className="p-4 hover:bg-gray-100 flex items-center">
                                                 <Link
                                                     to={`/producto/${product.cod_producto}`}
                                                     onClick={() => {
-                                                        setSearchTerm('');
-                                                        setSearchResults([]);
+                                                        setSearchTerm('')
+                                                        setSearchResults([])
                                                     }}
                                                 >
                                                     <div className="flex items-center">
@@ -201,7 +198,7 @@ const Nav = () => {
                 </div>
             </div>
         </nav>
-    );
-};
+    )
+}
 
-export default Nav;
+export default Nav
