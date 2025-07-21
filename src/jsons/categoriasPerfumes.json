@@ -4,18 +4,18 @@
       "title": "Hombres",
       "image": "/images/accesorios/categorias/cargadores.webp",
       "link": "/cargadores",
-      "cod_categoria": "CARG"
+      "cod_categoria": "HEP"
     },
     {
         "id": 2,
-        "title": "Cables",
+        "title": "Mujeres",
         "image": "/images/accesorios/categorias/cables.webp",
         "link": "/cables",
-        "cod_categoria": "CABL"
+        "cod_categoria": "MEP"
       },
       {
         "id": 3,
-        "title": "Audifonos",
+        "title": "Unisex",
         "image": "/images/accesorios/categorias/audifonos.webp",
         "link": "/audifonos",
         "cod_categoria": "AUDIF"

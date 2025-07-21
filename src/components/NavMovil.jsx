@@ -171,6 +171,14 @@ const NavMovil = ({
                                     <FaChevronRight className="text-xl text-gray-400" />
                                 </li>
                             </Link>
+                            <Link to="/perfumes" onClick={() => { setClick(false) }} className="w-full">
+                                <li className={`relative group transition cursor-pointer flex justify-between items-center w-full p-3 rounded-lg ${
+                                    location.pathname === '/perfumes' ? 'bg-color-hover bg-opacity-20' : 'hover:bg-color-hover hover:bg-opacity-20'
+                                }`}>
+                                    <span className="text-xl">Perfumes</span>
+                                    <FaChevronRight className="text-xl text-gray-400" />
+                                </li>
+                            </Link>
                             <Link to="/accesorios" onClick={() => { setClick(false) }} className="w-full">
                                 <li className={`relative group transition cursor-pointer flex justify-between items-center w-full p-3 rounded-lg ${
                                     location.pathname === '/accesorios' ? 'bg-color-hover bg-opacity-20' : 'hover:bg-color-hover hover:bg-opacity-20'

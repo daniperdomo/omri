@@ -255,7 +255,7 @@ app.get('/api/productos/perfumes', async (req, res) => {
             descripcion,
             Imagenes (url)
         `)
-        .in('cod_categoria', ['HEP'])
+        .in('cod_categoria', ['HEP', 'MEP'])
         .eq('estatus', 1)
         .order('cod_categoria', { ascending: true })
         .order('modelo', { ascending: true })        
