@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import categoriasCubitt from "../jsons/categoriasCubitt.json";
+import categoriasPerfumes from "../jsons/categoriasPerfumes.json";
 import ProductGrid from "../components/ProductGrid";
-import { debounce } from "lodash";
 import PantallaCarga from "../components/PantallaCarga";
 
-const Cubitt = () => {
+const Perfumes = () => {
   const [productos, setProductos] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
   const [precioMin, setPrecioMin] = useState("");
   const [precioMax, setPrecioMax] = useState("");
-  const [errorPrecio, setErrorPrecio] = useState("");
   const [loading, setLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedImages, setLoadedImages] = useState({});
@@ -17,7 +16,7 @@ const Cubitt = () => {
   // Precargar imágenes de categorías
   useEffect(() => {
     const loadImages = async () => {
-      const imagePromises = categoriasCubitt.map((category) => {
+      const imagePromises = categoriasPerfumes.map((category) => {
         return new Promise((resolve) => {
           const img = new Image();
           img.src = category.image;
@@ -36,17 +35,16 @@ const Cubitt = () => {
     loadImages();
   }, []);
 
-  // Función para obtener productos desde la API
   const fetchProductos = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8081/api/productos/cubitt`);
+      const response = await fetch(`http://localhost:8081/api/productos/perfumes`);
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor");
       }
       const data = await response.json();
       setProductos(data);
-      sessionStorage.setItem("productosCubitt", JSON.stringify(data));
+      sessionStorage.setItem("productosPerfumes", JSON.stringify(data));
     } catch (error) {
       console.error("Error leyendo productos:", error);
     } finally {
@@ -55,7 +53,7 @@ const Cubitt = () => {
   };
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productosCubitt");
+    const productosGuardados = sessionStorage.getItem("productosPerfumes");
     if (productosGuardados) {
       setProductos(JSON.parse(productosGuardados));
       setLoading(false);
@@ -64,38 +62,23 @@ const Cubitt = () => {
     }
   }, []);
 
-  const validarPrecio = () => {
-    if (precioMin && precioMax && parseFloat(precioMin) > parseFloat(precioMax)) {
-      setErrorPrecio("El precio mínimo no puede ser mayor que el máximo.");
-      return false;
-    }
-    if (isNaN(precioMin) || isNaN(precioMax)) {
-      setErrorPrecio("Los precios deben ser números válidos.");
-      return false;
-    }
-    setErrorPrecio("");
-    return true;
-  };
+  const marcasUnicas = [...new Set(productos.map((producto) => producto.cod_marca))];
 
-  const aplicarFiltros = () => {
-    const productosFiltrados = productos.filter((producto) => {
-      const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
-      const cumplePrecio =
-        (!precioMin || producto.precio >= parseFloat(precioMin)) &&
-        (!precioMax || producto.precio <= parseFloat(precioMax));
-      return cumpleCategoria && cumplePrecio;
-    });
+  const productosFiltrados = productos.filter((producto) => {
+    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
+    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada;
+    const cumplePrecio =
+      (!precioMin || producto.precio >= parseFloat(precioMin)) &&
+      (!precioMax || producto.precio <= parseFloat(precioMax));
+    return cumpleCategoria && cumpleMarca && cumplePrecio;
+  });
 
-    return productosFiltrados;
-  };
-
-  const aplicarFiltrosDebounced = debounce(aplicarFiltros, 300);
-
-  useEffect(() => {
-    aplicarFiltrosDebounced();
-  }, [categoriaSeleccionada, precioMin, precioMax]);
-
-  const productosFiltrados = aplicarFiltros();
+  // Ordenar productos filtrados por marca
+  const productosOrdenados = [...productosFiltrados].sort((a, b) => {
+    if (a.cod_marca < b.cod_marca) return -1;
+    if (a.cod_marca > b.cod_marca) return 1;
+    return 0;
+  });
 
   const handleCategoriaClick = (cod_categoria) => {
     setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
@@ -103,18 +86,13 @@ const Cubitt = () => {
 
   // Calcular si todas las imágenes de categorías están cargadas
   const allCategoryImagesLoaded = imagesLoaded && 
-    categoriasCubitt.every(category => loadedImages[category.id]);
+    categoriasPerfumes.every(category => loadedImages[category.id]);
 
   return (
     <div className="py-8 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-6">
-          <img
-            src="/images/cubitt/logocubitt.webp"
-            alt="Logo de Cubitt"
-            className="mx-auto w-48 h-auto"
-            loading="eager" // Cargar inmediatamente al ser importante
-          />
+          <h1 className="text-4xl font-bold text-gray-900">Perfumes</h1>
         </header>
 
         <h2 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-2xl text-gray-700 mb-6 text-left">Categorías</h2>
@@ -122,17 +100,17 @@ const Cubitt = () => {
         {/* Contenedor de categorías con placeholders de carga */}
         <div className="overflow-x-auto scrollbar-hide whitespace-nowrap mb-12 lg:overflow-x-visible lg:whitespace-normal">
           <div className="inline-flex space-x-4 lg:flex lg:flex-nowrap lg:space-x-4">
-            {categoriasCubitt.map((category) => (
+            {categoriasPerfumes.map((category) => (
               <button
                 key={category.id}
                 onClick={() => handleCategoriaClick(category.cod_categoria)}
-                className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 md:hover:scale-105 hover:shadow-lg hover:z-20 ${
-                  categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover z-10" : "z-0"
+                className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                  categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover" : ""
                 }`}
                 disabled={!loadedImages[category.id]} // Deshabilitar botón mientras carga
               >
                 {!loadedImages[category.id] && (
-                  <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
                 )}
                 <img
                   src={category.image}
@@ -160,28 +138,38 @@ const Cubitt = () => {
         <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
           <h2 className="text-xl text-gray-700">Filtrar por:</h2>
 
-          {/* Select de categorías */}
           <select
             value={categoriaSeleccionada}
             onChange={(e) => setCategoriaSeleccionada(e.target.value)}
             className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
           >
             <option value="">Categoría</option>
-            {categoriasCubitt.map((category) => (
+            {categoriasPerfumes.map((category) => (
               <option key={category.cod_categoria} value={category.cod_categoria}>
                 {category.title}
               </option>
             ))}
           </select>
 
-          {/* Inputs de precio */}
+          <select
+            value={marcaSeleccionada}
+            onChange={(e) => setMarcaSeleccionada(e.target.value)}
+            className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+          >
+            <option value="">Marca</option>
+            {marcasUnicas.map((marca) => (
+              <option key={marca} value={marca}>
+                {marca}
+              </option>
+            ))}
+          </select>
+
           <div className="flex space-x-2">
             <input
               type="number"
               placeholder="$-Min"
               value={precioMin}
               onChange={(e) => setPrecioMin(e.target.value)}
-              onBlur={validarPrecio}
               min="0"
               className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
             />
@@ -190,23 +178,21 @@ const Cubitt = () => {
               placeholder="$-Max"
               value={precioMax}
               onChange={(e) => setPrecioMax(e.target.value)}
-              onBlur={validarPrecio}
               min="0"
               className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
             />
           </div>
-          {errorPrecio && <p className="text-red-500 text-sm">{errorPrecio}</p>}
         </div>
 
         {/* Mostrar contenido solo cuando todo esté listo */}
         {(!allCategoryImagesLoaded || loading) ? (
           <PantallaCarga />
         ) : (
-          <ProductGrid productos={productosFiltrados} />
+          <ProductGrid productos={productosOrdenados} />
         )}
       </div>
     </div>
   );
 };
 
-export default Cubitt;
+export default Perfumes;

@@ -11,7 +11,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const corsOptions = {
-    origin: ["https://www.omrivzla.com/"]
+    origin: ["http://localhost:5173"]
 }
 
 app.use(cors(corsOptions))
@@ -203,6 +203,59 @@ app.get('/api/productos/cubitt', async (req, res) => {
             Imagenes (url)
         `)
         .eq('cod_marca', 'CT')
+        .eq('estatus', 1)
+        .order('cod_categoria', { ascending: true })
+        .order('modelo', { ascending: true })        
+        .order('cod_producto', { ascending: true }) 
+
+    if (error) {
+        console.log('Error obteniendo productos:', error)
+        return res.status(500).send('Error obteniendo productos')
+    }
+
+    const productosConImagenesOrdenadas = data.map(producto => ({
+        ...producto,
+        Imagenes: producto.Imagenes.sort((a, b) => a.url.localeCompare(b.url))
+    }))
+
+    const productos = productosConImagenesOrdenadas.map(producto => ({
+        cod_producto: producto.cod_producto,
+        cod_categoria: producto.cod_categoria,
+        modelo: producto.modelo,
+        cod_marca: producto.cod_marca,
+        nombre: producto.nombre,
+        caracteristicas: producto.caracteristicas,
+        precio: producto.precio,
+        cantidad: producto.cantidad,
+        estatus: producto.estatus,
+        color: producto.color,
+        especificaciones : producto.especificaciones,
+        descripcion : producto.descripcion,
+        imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
+    }))
+
+    res.status(200).json(productos)
+})
+
+app.get('/api/productos/perfumes', async (req, res) => {
+    const { data, error } = await supabase
+        .from('Productos')
+        .select(`
+            cod_producto,
+            cod_categoria,
+            modelo,
+            cod_marca,
+            nombre,
+            caracteristicas,
+            especificaciones,
+            precio,
+            cantidad,
+            estatus,
+            color,
+            descripcion,
+            Imagenes (url)
+        `)
+        .in('cod_categoria', ['HEP'])
         .eq('estatus', 1)
         .order('cod_categoria', { ascending: true })
         .order('modelo', { ascending: true })        

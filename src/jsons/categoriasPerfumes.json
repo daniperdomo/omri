@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "title": "Hombres",
+      "image": "/images/accesorios/categorias/cargadores.webp",
+      "link": "/cargadores",
+      "cod_categoria": "CARG"
+    },
+    {
+        "id": 2,
+        "title": "Cables",
+        "image": "/images/accesorios/categorias/cables.webp",
+        "link": "/cables",
+        "cod_categoria": "CABL"
+      },
+      {
+        "id": 3,
+        "title": "Audifonos",
+        "image": "/images/accesorios/categorias/audifonos.webp",
+        "link": "/audifonos",
+        "cod_categoria": "AUDIF"
+      }
+  ]

@@ -19,11 +19,12 @@ const ProductDetail = () => {
   const isAccesorio = producto && (
     producto.cod_categoria === "CARG" || 
     producto.cod_categoria === "CABL" || 
+    producto.cod_categoria === "HEP" ||
     producto.cod_categoria === "AUDIF"
   );
 
   useEffect(() => {
-    fetch(`/api/productos/${cod_producto}`)
+    fetch(`http://localhost:8081/api/productos/${cod_producto}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error en la respuesta del servidor");
