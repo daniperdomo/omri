@@ -65,7 +65,13 @@ const Perfumes = () => {
   const marcasUnicas = [...new Set(productos.map((producto) => producto.cod_marca))];
 
   const productosFiltrados = productos.filter((producto) => {
-    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
+    const cumpleCategoria = !categoriaSeleccionada ||
+    producto.cod_categoria === categoriaSeleccionada ||
+    (
+      (categoriaSeleccionada === "HEP" || categoriaSeleccionada === "MEP") &&
+      producto.cod_categoria === "UNI"
+    );
+
     const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada;
     const cumplePrecio =
       (!precioMin || producto.precio >= parseFloat(precioMin)) &&

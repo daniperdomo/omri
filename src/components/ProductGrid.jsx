@@ -5,7 +5,7 @@ import ProductCard from "../components/ProductCard";
 const ProductGrid = ({ productos }) => {
   // Función para determinar si la categoría es CARG, CABL o AUDIF
   const isSpecialCategory = (cod_categoria) => {
-    return cod_categoria === "CARG" || cod_categoria === "CABL" || cod_categoria === "AUDIF" || cod_categoria === "HEP" || cod_categoria === "MEP";
+    return cod_categoria === "CARG" || cod_categoria === "CABL" || cod_categoria === "AUDIF" || cod_categoria === "HEP" || cod_categoria === "MEP" || cod_categoria === "UNI";
   };
 
   // Ordenar los productos

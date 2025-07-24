@@ -24,7 +24,7 @@ const ProductCard = ({ product, allProducts }) => {
   };
 
   // Verificar si el producto pertenece a las categorías CARG, CABL o AUDIF
-  const isAccesorio = product.cod_categoria === "CARG" || product.cod_categoria === "CABL" || product.cod_categoria === "AUDIF" || product.cod_categoria === "HEP" || product.cod_categoria === "MEP";
+  const isAccesorio = product.cod_categoria === "CARG" || product.cod_categoria === "CABL" || product.cod_categoria === "AUDIF" || product.cod_categoria === "HEP" || product.cod_categoria === "MEP" || product.cod_categoria === "UNI";
 
   // Efecto para verificar si el texto excede el ancho disponible
   useEffect(() => {

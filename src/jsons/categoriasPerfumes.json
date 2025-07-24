@@ -1,23 +1,23 @@
 [
     {
       "id": 1,
-      "title": "Hombres",
-      "image": "/images/accesorios/categorias/cargadores.webp",
-      "link": "/cargadores",
+      "title": "Hombre",
+      "image": "/images/perfumes/categorias/hombre.webp",
+      "link": "/hombre",
       "cod_categoria": "HEP"
     },
     {
         "id": 2,
-        "title": "Mujeres",
-        "image": "/images/accesorios/categorias/cables.webp",
-        "link": "/cables",
+        "title": "Mujer",
+        "image": "images/perfumes/categorias/mujer.webp",
+        "link": "/mujer",
         "cod_categoria": "MEP"
       },
       {
         "id": 3,
         "title": "Unisex",
-        "image": "/images/accesorios/categorias/audifonos.webp",
-        "link": "/audifonos",
-        "cod_categoria": "AUDIF"
+        "image": "/images/perfumes/categorias/unisex.webp",
+        "link": "/unisex",
+        "cod_categoria": "UNI"
       }
   ]

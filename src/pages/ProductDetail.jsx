@@ -21,6 +21,7 @@ const ProductDetail = () => {
     producto.cod_categoria === "CABL" || 
     producto.cod_categoria === "HEP" ||
     producto.cod_categoria === "MEP" ||
+    producto.cod_categoria === "UNI" ||
     producto.cod_categoria === "AUDIF"
   );
 
