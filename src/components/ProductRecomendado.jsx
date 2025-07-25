@@ -6,7 +6,7 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, c
   const modelosVistos = new Set();
   const productosLimitados = [];
 
-  const categoriasEspecificas = ['CARG', 'CABL', 'AUDIF'];
+  const categoriasEspecificas = ['CARG', 'CABL', 'AUDIF', 'HEP', 'MEP', 'UNI'];
   const esCategoriaEspecifica = categoriasEspecificas.includes(categoria);
 
   if (esCategoriaEspecifica) {

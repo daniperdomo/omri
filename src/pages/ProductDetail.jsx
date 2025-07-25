@@ -42,7 +42,7 @@ const ProductDetail = () => {
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
-        return fetch(`/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
+        return fetch(`http://localhost:8081/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
       })
       .then((response) => {
         if (!response.ok) {
@@ -84,6 +84,8 @@ const ProductDetail = () => {
     (prod) => prod.modelo === producto.modelo
   );
 
+  const ocultarEspecificaciones = ["HEP", "MEP", "UNI"].includes(producto.cod_categoria);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -95,7 +97,6 @@ const ProductDetail = () => {
         className="py-6 bg-gray-100 min-h-screen relative overflow-hidden"
       >
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Contenedor principal */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +105,6 @@ const ProductDetail = () => {
             className="bg-white rounded-2xl shadow-lg overflow-hidden"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-              {/* Columna izquierda: Imagen principal y miniaturas */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -112,7 +112,6 @@ const ProductDetail = () => {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="flex flex-col md:flex-row items-start"
               >
-                {/* En escritorio: Miniaturas a la izquierda */}
                 {allImages.length > 1 && (
                   <div className="hidden md:flex flex-col space-y-3 mr-5">
                     {allImages.map((img, index) => (
@@ -135,7 +134,6 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                {/* Imagen principal */}
                 <div className="w-full max-w-[600px] h-[300px] md:h-[600px] flex justify-center items-center border-2 border-gray-200 rounded-xl overflow-hidden">
                   <img
                     src={currentImage}
@@ -144,7 +142,6 @@ const ProductDetail = () => {
                   />
                 </div>
 
-                {/* En móvil: Miniaturas centradas debajo de la imagen principal */}
                 {allImages.length > 1 && (
                   <div className="flex md:hidden w-full justify-center space-x-3 mt-5 overflow-x-auto">
                     {allImages.map((img, index) => (
@@ -168,7 +165,6 @@ const ProductDetail = () => {
                 )}
               </motion.div>
 
-              {/* Columna derecha: Detalles del producto */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -187,7 +183,6 @@ const ProductDetail = () => {
                     <span className="text-lg md:text-xl font-semibold text-red-600">No disponible</span>
                   )}
                 </div>
-                {/* Descripción del producto */}
                 <div className="text-gray-700 text-lg">
                   <p><strong>Descripción:</strong> {producto.descripcion}</p>
                 </div>
@@ -232,7 +227,7 @@ const ProductDetail = () => {
               </motion.div>
             </div>
 
-            {/* Secciones expandibles para Características y Especificaciones */}
+            {/* Secciones expandibles */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -244,14 +239,15 @@ const ProductDetail = () => {
                 titulo="Características"
                 contenido={producto.caracteristicas}
               />
-              <SeccionExpandible
-                titulo="Especificaciones"
-                contenido={producto.especificaciones}
-              />
+              {!ocultarEspecificaciones && (
+                <SeccionExpandible
+                  titulo="Especificaciones"
+                  contenido={producto.especificaciones}
+                />
+              )}
             </motion.div>
           </motion.div>
 
-          {/* Componente de productos recomendados */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
