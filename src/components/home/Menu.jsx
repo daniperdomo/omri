@@ -18,11 +18,11 @@ const Menu = () => {
     },
     {
       id: 2,
-      title: "Accesorios Apple",
-      description: "Ven y busca cargadores, cables y audífonos para tus dispositivos Apple.",
-      image: "/images/home/menu/menuapple.webp",
-      lowResImage: "/images/home/menu/menuapple-lowres.webp",
-      link: "/accesorios",
+      title: "Perfumes Arabes",
+      description: "¡Adquiere tus perfumes arabes favoritos!",
+      image: "/images/home/menu/menuarabe.webp",
+      lowResImage: "/images/home/menu/menuarabe-lowres.webp",
+      link: "/perfumes",
     },
     {
       id: 3,
@@ -34,11 +34,11 @@ const Menu = () => {
     },
     {
       id: 4,
-      title: "Perfumes Arabes",
-      description: "Próximamente disponibles en Omri.",
-      image: "/images/home/menu/menuarabe.webp",
-      lowResImage: "/images/home/menu/menuarabe-lowres.webp",
-      link: null,
+      title: "Accesorios Apple",
+      description: "Ven y busca cargadores, cables y audífonos para tus dispositivos Apple.",
+      image: "/images/home/menu/menuapple.webp",
+      lowResImage: "/images/home/menu/menuapple-lowres.webp",
+      link: "/accesorios",
     },
   ];
 
