@@ -29,7 +29,7 @@ const Nav = () => {
     }, [])
 
     useEffect(() => {
-        fetch(`/api/productos`)
+        fetch(`http://localhost:8081/api/productos`)
             .then(response => response.json())
             .then(data => {
                 sessionStorage.setItem('searchResults', JSON.stringify(data))

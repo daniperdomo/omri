@@ -98,6 +98,7 @@ app.get('/api/productos', async (req, res) => {
             descripcion,
             Imagenes (url)
         `)
+        .neq('estatus', 0) // 👈 Filtra productos con estatus ≠ 0
         .order('cod_categoria', { ascending: true })
         .order('modelo', { ascending: true })        
         .order('cod_producto', { ascending: true }) 
@@ -124,7 +125,7 @@ app.get('/api/productos', async (req, res) => {
         estatus: producto.estatus,
         color: producto.color,
         especificaciones: producto.especificaciones,
-        descripcion : producto.descripcion,
+        descripcion: producto.descripcion,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 

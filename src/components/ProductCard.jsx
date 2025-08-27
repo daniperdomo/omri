@@ -23,8 +23,14 @@ const ProductCard = ({ product, allProducts }) => {
     navigate(`/producto/${product.cod_producto}`);
   };
 
-  // Verificar si el producto pertenece a las categorías CARG, CABL o AUDIF
-  const isAccesorio = product.cod_categoria === "CARG" || product.cod_categoria === "CABL" || product.cod_categoria === "AUDIF" || product.cod_categoria === "HEP" || product.cod_categoria === "MEP" || product.cod_categoria === "UNI";
+  // Verificar si el producto pertenece a las categorías de accesorios
+  const isAccesorio =
+    product.cod_categoria === "CARG" ||
+    product.cod_categoria === "CABL" ||
+    product.cod_categoria === "AUDIF" ||
+    product.cod_categoria === "HEP" ||
+    product.cod_categoria === "MEP" ||
+    product.cod_categoria === "UNI";
 
   // Efecto para verificar si el texto excede el ancho disponible
   useEffect(() => {
@@ -68,8 +74,10 @@ const ProductCard = ({ product, allProducts }) => {
           </h3>
         </div>
 
-        {/* Precio */}
-        <p className="text-gray-700">${product.precio.toFixed(2)}</p>
+        {/* Precio (oculto si es MEP, HEP o UNI) */}
+        {!(product.cod_categoria === "MEP" || product.cod_categoria === "HEP" || product.cod_categoria === "UNI") && (
+          <p className="text-gray-700">${product.precio.toFixed(2)}</p>
+        )}
 
         {/* Disponibilidad */}
         {availability ? (

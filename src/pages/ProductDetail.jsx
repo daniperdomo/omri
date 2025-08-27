@@ -105,6 +105,7 @@ const ProductDetail = () => {
             className="bg-white rounded-2xl shadow-lg overflow-hidden"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+              {/* Imagen principal + miniaturas */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -165,6 +166,7 @@ const ProductDetail = () => {
                 )}
               </motion.div>
 
+              {/* Información del producto */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -173,9 +175,14 @@ const ProductDetail = () => {
                 className="space-y-6"
               >
                 <h1 className="text-3xl md:text-5xl font-bold text-gray-900">{producto.nombre}</h1>
-                <p className="text-2xl md:text-4xl font-semibold text-gray-800">
-                  ${producto.precio.toFixed(2)}
-                </p>
+
+                {/* Precio (oculto si es MEP, HEP o UNI) */}
+                {!(producto.cod_categoria === "MEP" || producto.cod_categoria === "HEP" || producto.cod_categoria === "UNI") && (
+                  <p className="text-2xl md:text-4xl font-semibold text-gray-800">
+                    ${producto.precio.toFixed(2)}
+                  </p>
+                )}
+
                 <div className="flex items-center space-x-2">
                   {availability ? (
                     <span className="text-lg md:text-xl font-semibold text-green-600">Disponible</span>
@@ -183,9 +190,12 @@ const ProductDetail = () => {
                     <span className="text-lg md:text-xl font-semibold text-red-600">No disponible</span>
                   )}
                 </div>
+
                 <div className="text-gray-700 text-lg">
                   <p><strong>Descripción:</strong> {producto.descripcion}</p>
                 </div>
+
+                {/* Colores (solo si no es accesorio) */}
                 {!isAccesorio && (
                   <div className="space-y-5">
                     <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Colores:</h3>
@@ -205,6 +215,8 @@ const ProductDetail = () => {
                     </div>
                   </div>
                 )}
+
+                {/* Botón de WhatsApp */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -248,6 +260,7 @@ const ProductDetail = () => {
             </motion.div>
           </motion.div>
 
+          {/* Productos recomendados */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
