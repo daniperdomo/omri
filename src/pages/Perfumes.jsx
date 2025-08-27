@@ -38,7 +38,7 @@ const Perfumes = () => {
   const fetchProductos = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8081/api/productos/perfumes`);
+      const response = await fetch(`/api/productos/perfumes`);
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor");
       }
