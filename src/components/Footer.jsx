@@ -32,7 +32,7 @@ const Footer = () => {
             Contacto
           </h2>
           <ul className='text-[16px] my-4'>
-            <li className='my-2'>E-mail: omrivzla@gmail.com</li>
+            <li className='my-2'>Correo: omrivzla@gmail.com</li>
             <li className='my-2'>Teléfono: 0424-9370299</li>
           </ul>
         </div>

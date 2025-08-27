@@ -40,7 +40,7 @@ const Cubitt = () => {
   const fetchProductos = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/productos/cubitt`);
+      const response = await fetch(`http://localhost:8081/api/productos/cubitt`);
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor");
       }

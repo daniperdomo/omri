@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "title": "Hombre",
+      "image": "/images/perfumes/categorias/hombre.webp",
+      "link": "/hombre",
+      "cod_categoria": "HEP"
+    },
+    {
+        "id": 2,
+        "title": "Mujer",
+        "image": "images/perfumes/categorias/mujer.webp",
+        "link": "/mujer",
+        "cod_categoria": "MEP"
+      },
+      {
+        "id": 3,
+        "title": "Unisex",
+        "image": "/images/perfumes/categorias/unisex.webp",
+        "link": "/unisex",
+        "cod_categoria": "UNI"
+      }
+  ]

@@ -9,6 +9,7 @@ import Nosotros from './pages/Nosotros';
 import Admin from './pages/Admin';
 import AdminForm from './pages/AdminForm';
 import ProductDetail from './pages/ProductDetail'; // Importa la nueva página
+import Perfumes from './pages/Perfumes';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation()
@@ -35,6 +36,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/cubitt' element={<Cubitt />} />
+            <Route path='/perfumes' element={<Perfumes />} />
             <Route path='/accesorios' element={<Accesorios />} />
             <Route path='/nosotros' element={<Nosotros />} />
             <Route path='/zXyWvU3tS2rQ1pO9nM8lK7jH6gF5eD4cB3aA' element={<Admin />}/>

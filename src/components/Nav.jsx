@@ -29,7 +29,7 @@ const Nav = () => {
     }, [])
 
     useEffect(() => {
-        fetch(`/api/productos`)
+        fetch(`http://localhost:8081/api/productos`)
             .then(response => response.json())
             .then(data => {
                 sessionStorage.setItem('searchResults', JSON.stringify(data))
@@ -125,6 +125,12 @@ const Nav = () => {
                             <Link to="/cubitt" onClick={handleLogoClick}>
                                 <li className="relative group hover:text-color-hover transition cursor-pointer">
                                     <span>Cubitt</span>
+                                    <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                                </li>
+                            </Link>
+                            <Link to="/perfumes" onClick={handleLogoClick}>
+                                <li className="relative group hover:text-color-hover transition cursor-pointer">
+                                    <span>Perfumes</span>
                                     <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                 </li>
                             </Link>
