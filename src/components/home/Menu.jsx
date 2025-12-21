@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import '../../styles/styles.css';
 
 const Menu = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [loadedItems, setLoadedItems] = useState({});
 
   const items = [
     {
@@ -13,7 +11,6 @@ const Menu = () => {
       title: "Catalogo Cubitt",
       description: "Descubre los productos Cubitt que ofrecemos para ti.",
       image: "/images/home/menu/menucubi.webp",
-      lowResImage: "/images/home/menu/menucubi-lowres.webp",
       link: "/cubitt",
     },
     {
@@ -21,7 +18,6 @@ const Menu = () => {
       title: "Perfumes Arabes",
       description: "¡Adquiere tus perfumes arabes favoritos!",
       image: "/images/home/menu/menuarabe.webp",
-      lowResImage: "/images/home/menu/menuarabe-lowres.webp",
       link: "/perfumes",
     },
     {
@@ -29,7 +25,6 @@ const Menu = () => {
       title: "Accesorios Samsung",
       description: "Accesorios originales de la marca Samsung disponibles para ti.",
       image: "/images/home/menu/menusamsung.webp",
-      lowResImage: "/images/home/menu/menusamsung-lowres.webp",
       link: "/accesorios",
     },
     {
@@ -37,7 +32,6 @@ const Menu = () => {
       title: "Accesorios Apple",
       description: "Ven y busca cargadores, cables y audífonos para tus dispositivos Apple.",
       image: "/images/home/menu/menuapple.webp",
-      lowResImage: "/images/home/menu/menuapple-lowres.webp",
       link: "/accesorios",
     },
   ];
@@ -47,22 +41,9 @@ const Menu = () => {
     const loadImages = async () => {
       const promises = items.map(item => {
         return new Promise((resolve) => {
-          // Precargar imagen de baja resolución
-          const lowResImg = new Image();
-          lowResImg.src = item.lowResImage;
-          lowResImg.onload = () => {
-            setLoadedItems(prev => ({ ...prev, [item.id]: 'lowres' }));
-            resolve();
-          };
-          lowResImg.onerror = resolve;
-
-          // Precargar imagen de alta resolución
           const img = new Image();
           img.src = item.image;
-          img.onload = () => {
-            setLoadedItems(prev => ({ ...prev, [item.id]: 'highres' }));
-            resolve();
-          };
+          img.onload = resolve;
           img.onerror = resolve;
         });
       });
@@ -86,27 +67,12 @@ const Menu = () => {
           className="relative flex items-center justify-center h-80 text-white text-center rounded-lg overflow-hidden shadow-lg hover:shadow-md transition-all duration-300 transform hover:scale-101"
         >
           {/* Placeholder de carga */}
-          {!loadedItems[item.id] && (
+          {!imagesLoaded && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
           )}
 
-          {/* Imagen de baja resolución */}
-          {loadedItems[item.id] === 'lowres' && (
-            <div 
-              className="absolute inset-0 w-full h-full"
-              style={{
-                backgroundImage: `url(${item.lowResImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                filter: "blur(2px)"
-              }}
-            >
-              <div className="absolute inset-0 bg-black bg-opacity-25"></div>
-            </div>
-          )}
-
-          {/* Imagen de alta resolución */}
-          {loadedItems[item.id] === 'highres' && (
+          {/* Imagen */}
+          {imagesLoaded && (
             <div 
               className="absolute inset-0 w-full h-full"
               style={{
