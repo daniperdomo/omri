@@ -12,7 +12,7 @@ const Entrada = () => {
     id: 1,
     title: "¡Bienvenido a la web de Omri!",
     subtitle: "Consulta la disponibilidad e información de todos los productos.",
-    image: "/images/home/slider/omri.webp",
+    image: "/images/home/slider/prueba2.webp",
     lowResImage: "/images/home/slider/prueba2-lowres.webp" // Añade una versión baja resolución
   };
 
