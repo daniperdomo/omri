@@ -15,7 +15,7 @@ const Nosotros = () => {
   // Precargar imagen
   useEffect(() => {
     const img = new Image();
-    img.src = "/images/home/slider/prueba2.webp";
+    img.src = "/images/home/slider/omri.webp";
     img.onload = () => setImageLoaded(true);
     return () => { img.onload = null; };
   }, []);
