@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import categoriasCubitt from "../jsons/categoriasCubitt.json";
 import ProductGrid from "../components/ProductGrid";
-import { debounce } from "lodash";
+import { debounce } from "../utils/debounce";
 import PantallaCarga from "../components/PantallaCarga";
 
 const Cubitt = () => {
@@ -77,32 +77,23 @@ const Cubitt = () => {
     return true;
   };
 
-  const aplicarFiltros = () => {
-    const productosFiltrados = productos.filter((producto) => {
+  // Memoize filtered products computation
+  const productosFiltrados = useMemo(() => {
+    return productos.filter((producto) => {
       const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
       const cumplePrecio =
         (!precioMin || producto.precio >= parseFloat(precioMin)) &&
         (!precioMax || producto.precio <= parseFloat(precioMax));
       return cumpleCategoria && cumplePrecio;
     });
+  }, [productos, categoriaSeleccionada, precioMin, precioMax]);
 
-    return productosFiltrados;
-  };
-
-  const aplicarFiltrosDebounced = debounce(aplicarFiltros, 300);
-
-  useEffect(() => {
-    aplicarFiltrosDebounced();
-  }, [categoriaSeleccionada, precioMin, precioMax]);
-
-  const productosFiltrados = aplicarFiltros();
-
-  const handleCategoriaClick = (cod_categoria) => {
+  const handleCategoriaClick = useCallback((cod_categoria) => {
     setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
-  };
+  }, []);
 
   // Calcular si todas las imágenes de categorías están cargadas
-  const allCategoryImagesLoaded = imagesLoaded && 
+  const allCategoryImagesLoaded = imagesLoaded &&
     categoriasCubitt.every(category => loadedImages[category.id]);
 
   return (
@@ -126,9 +117,8 @@ const Cubitt = () => {
               <button
                 key={category.id}
                 onClick={() => handleCategoriaClick(category.cod_categoria)}
-                className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 md:hover:scale-105 hover:shadow-lg hover:z-20 ${
-                  categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover z-10" : "z-0"
-                }`}
+                className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 md:hover:scale-105 hover:shadow-lg hover:z-20 ${categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover z-10" : "z-0"
+                  }`}
                 disabled={!loadedImages[category.id]} // Deshabilitar botón mientras carga
               >
                 {!loadedImages[category.id] && (
@@ -137,15 +127,14 @@ const Cubitt = () => {
                 <img
                   src={category.image}
                   alt={category.title}
-                  className={`w-full h-full object-cover transition-opacity duration-300 ${
-                    !loadedImages[category.id] ? "opacity-0" : "opacity-100"
-                  }`}
+                  className={`w-full h-full object-cover transition-opacity duration-300 ${!loadedImages[category.id] ? "opacity-0" : "opacity-100"
+                    }`}
                   loading="lazy"
                   decoding="async"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-center">
-                  <h3 
-                    style={{ fontFamily: 'Amblas, sans-serif' }} 
+                  <h3
+                    style={{ fontFamily: 'Amblas, sans-serif' }}
                     className="text-sm md:text-lg font-bold text-white text-center"
                   >
                     {category.title}

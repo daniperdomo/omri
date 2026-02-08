@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product, allProducts }) => {
+const ProductCard = memo(({ product, allProducts }) => {
   const [currentImage, setCurrentImage] = useState(
     product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : ""
   );
@@ -12,16 +12,16 @@ const ProductCard = ({ product, allProducts }) => {
   const textRef = useRef(null);
 
   // Manejar el cambio de imagen al seleccionar un color
-  const handleColorClick = (image, quantity, index) => {
+  const handleColorClick = useCallback((image, quantity, index) => {
     setCurrentImage(image);
     setAvailability(quantity > 0);
     setSelectedColorIndex(index);
-  };
+  }, []);
 
   // Manejar clic en la tarjeta para redirigir a la página de detalles
-  const handleCardClick = () => {
+  const handleCardClick = useCallback(() => {
     navigate(`/producto/${product.cod_producto}`);
-  };
+  }, [navigate, product.cod_producto]);
 
   // Verificar si el producto pertenece a las categorías de accesorios
   const isAccesorio =
@@ -53,6 +53,8 @@ const ProductCard = ({ product, allProducts }) => {
             src={currentImage}
             alt={product.nombre}
             className="w-full h-full object-contain"
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -66,9 +68,8 @@ const ProductCard = ({ product, allProducts }) => {
         <div className="overflow-hidden">
           <h3
             ref={textRef}
-            className={`text-lg font-bold text-gray-900 whitespace-nowrap overflow-hidden ${
-              shouldScroll ? "group-hover:animate-scroll-text group-hover:text-clip group-hover:overflow-visible" : ""
-            }`}
+            className={`text-lg font-bold text-gray-900 whitespace-nowrap overflow-hidden ${shouldScroll ? "group-hover:animate-scroll-text group-hover:text-clip group-hover:overflow-visible" : ""
+              }`}
           >
             {product.nombre}
           </h3>
@@ -92,9 +93,8 @@ const ProductCard = ({ product, allProducts }) => {
             {allProducts.map((otherProduct, index) => (
               <button
                 key={index}
-                className={`w-6 h-6 rounded-full border-2 focus:outline-none ${
-                  index === selectedColorIndex ? "border-color-hover shadow-lg" : "border-gray-300"
-                }`}
+                className={`w-6 h-6 rounded-full border-2 focus:outline-none ${index === selectedColorIndex ? "border-color-hover shadow-lg" : "border-gray-300"
+                  }`}
                 style={{ backgroundColor: otherProduct.color }}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -107,6 +107,8 @@ const ProductCard = ({ product, allProducts }) => {
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;

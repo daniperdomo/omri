@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { FaInstagram } from 'react-icons/fa';
 
-const Footer = () => {
+const Footer = memo(() => {
   return (
     <footer className='bg-black text-white lg:px-48 px-4 py-4'>
       <div className='container mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 items-start'>
         {/* Logo Section */}
         <div className='mb-4 md:mb-0 flex flex-col items-start'>
           {/* Imagen del logo */}
-          <img 
-            src='/images/isotipoblanco.webp' 
+          <img
+            src='/images/isotipoblanco.webp'
             alt='Logo de la empresa'
-            className='w-32 h-auto' // Ajusta el tamaño de la imagen con Tailwind
+            className='w-32 h-auto'
+            loading="lazy"
+            decoding="async"
           />
         </div>
 
@@ -58,6 +60,8 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
 
 export default Footer;

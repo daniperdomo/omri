@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import { FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import NavMovil from './NavMovil'
 
-const Nav = () => {
+const Nav = memo(() => {
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [showSearch, setShowSearch] = useState(false)
@@ -14,8 +14,8 @@ const Nav = () => {
     // Efecto para detectar clics fuera de la barra de búsqueda (solo escritorio)
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (window.innerWidth >= 1024 && 
-                searchRef.current && 
+            if (window.innerWidth >= 1024 &&
+                searchRef.current &&
                 !searchRef.current.contains(event.target)) {
                 setSearchResults([])
                 setSearchTerm('')
@@ -35,7 +35,7 @@ const Nav = () => {
                 sessionStorage.setItem('searchResults', JSON.stringify(data))
             })
             .catch(error => {
-                console.error('Error fetching products:', error)
+                // Error handling removed for production
             })
 
         fetch(`/api/categoria`)
@@ -44,7 +44,7 @@ const Nav = () => {
                 setCategories(data)
             })
             .catch(error => {
-                console.error('Error fetching categorias:', error)
+                // Error handling removed for production
             })
     }, [])
 
@@ -108,6 +108,7 @@ const Nav = () => {
                             src="/images/logofondoblanco.webp"
                             alt="Logo"
                             className="h-24 w-auto md:h-20 lg:h-32 cursor-pointer"
+                            loading="eager"
                         />
                     </Link>
                 </div>
@@ -173,10 +174,12 @@ const Nav = () => {
                                                     }}
                                                 >
                                                     <div className="flex items-center">
-                                                        <img 
-                                                            src={product.imagenes[0]?.url} 
-                                                            alt={product.nombre} 
-                                                            className="h-16 w-16 mr-4 object-cover rounded-lg" 
+                                                        <img
+                                                            src={product.imagenes[0]?.url}
+                                                            alt={product.nombre}
+                                                            className="h-16 w-16 mr-4 object-cover rounded-lg"
+                                                            loading="lazy"
+                                                            decoding="async"
                                                         />
                                                         <span className="text-lg">{product.nombre}</span>
                                                     </div>
@@ -205,6 +208,8 @@ const Nav = () => {
             </div>
         </nav>
     )
-}
+})
+
+Nav.displayName = 'Nav'
 
 export default Nav
