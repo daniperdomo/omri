@@ -17,8 +17,8 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState("");
 
   const isAccesorio = producto && (
-    producto.cod_categoria === "CARG" || 
-    producto.cod_categoria === "CABL" || 
+    producto.cod_categoria === "CARG" ||
+    producto.cod_categoria === "CABL" ||
     producto.cod_categoria === "HEP" ||
     producto.cod_categoria === "MEP" ||
     producto.cod_categoria === "UNI" ||
@@ -94,17 +94,17 @@ const ProductDetail = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="py-6 bg-gray-100 min-h-screen relative overflow-hidden"
+        className="py-12 bg-white min-h-screen relative overflow-hidden"
       >
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden"
+            className="bg-white overflow-hidden"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 py-12">
               {/* Imagen principal + miniaturas */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -114,15 +114,14 @@ const ProductDetail = () => {
                 className="flex flex-col md:flex-row items-start"
               >
                 {allImages.length > 1 && (
-                  <div className="hidden md:flex flex-col space-y-3 mr-5">
+                  <div className="hidden md:flex flex-col space-y-3 mr-6">
                     {allImages.map((img, index) => (
                       <button
                         key={index}
-                        className={`flex-shrink-0 w-20 h-20 border-2 focus:outline-none transition-all duration-200 ${
-                          currentImage === img.url
-                            ? "border-color-hover scale-110 z-10"
-                            : "border-gray-300 hover:border-color-hover-50 hover:scale-105"
-                        }`}
+                        className={`flex-shrink-0 w-20 h-20 border focus:outline-none transition-all duration-200 ${currentImage === img.url
+                            ? "border-gray-900 ring-2 ring-gray-900 ring-offset-2"
+                            : "border-gray-200 hover:border-gray-400"
+                          }`}
                         onClick={() => setCurrentImage(img.url)}
                       >
                         <img
@@ -135,7 +134,7 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                <div className="w-full max-w-[600px] h-[300px] md:h-[600px] flex justify-center items-center border-2 border-gray-200 rounded-xl overflow-hidden">
+                <div className="w-full max-w-[700px] h-[400px] md:h-[700px] flex justify-center items-center border border-gray-200 overflow-hidden bg-gray-50">
                   <img
                     src={currentImage}
                     alt={producto.nombre}
@@ -148,11 +147,10 @@ const ProductDetail = () => {
                     {allImages.map((img, index) => (
                       <button
                         key={index}
-                        className={`flex-shrink-0 w-16 h-16 border-2 focus:outline-none transition-colors duration-200 ${
-                          currentImage === img.url
-                            ? "border-color-hover"
-                            : "border-gray-300 hover:border-color-hover-50"
-                        }`}
+                        className={`flex-shrink-0 w-16 h-16 border focus:outline-none transition-colors duration-200 ${currentImage === img.url
+                            ? "border-gray-900"
+                            : "border-gray-200 hover:border-gray-400"
+                          }`}
                         onClick={() => setCurrentImage(img.url)}
                       >
                         <img
@@ -172,42 +170,46 @@ const ProductDetail = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="space-y-6"
+                className="space-y-8"
               >
-                <h1 className="text-3xl md:text-5xl font-bold text-gray-900">{producto.nombre}</h1>
+                <h1 className="text-3xl md:text-4xl font-light tracking-widest uppercase text-gray-900">{producto.nombre}</h1>
 
                 {/* Precio (oculto si es MEP, HEP o UNI) */}
                 {!(producto.cod_categoria === "MEP" || producto.cod_categoria === "HEP" || producto.cod_categoria === "UNI") && (
-                  <p className="text-2xl md:text-4xl font-semibold text-gray-800">
+                  <p className="text-3xl md:text-4xl font-medium text-gray-900">
                     ${producto.precio.toFixed(2)}
                   </p>
                 )}
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center">
                   {availability ? (
-                    <span className="text-lg md:text-xl font-semibold text-green-600">Disponible</span>
+                    <span className="px-4 py-2 bg-white border border-gray-300 text-sm font-medium tracking-wide uppercase text-gray-900">
+                      Disponible
+                    </span>
                   ) : (
-                    <span className="text-lg md:text-xl font-semibold text-red-600">No disponible</span>
+                    <span className="px-4 py-2 bg-gray-900 text-sm font-medium tracking-wide uppercase text-white">
+                      No disponible
+                    </span>
                   )}
                 </div>
 
-                <div className="text-gray-700 text-lg">
-                  <p><strong>Descripción:</strong> {producto.descripcion}</p>
+                <div className="text-gray-700 text-base leading-relaxed">
+                  <p className="text-sm font-light tracking-wide uppercase text-gray-500 mb-2">Descripción</p>
+                  <p>{producto.descripcion}</p>
                 </div>
 
                 {/* Colores (solo si no es accesorio) */}
                 {!isAccesorio && (
-                  <div className="space-y-5">
-                    <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Colores:</h3>
-                    <div className="flex space-x-4">
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-light tracking-wide uppercase text-gray-500">Colores disponibles</h3>
+                    <div className="flex gap-3">
                       {coloresDisponibles.map((prod, index) => (
                         <button
                           key={index}
-                          className={`w-10 h-10 md:w-12 md:h-12 rounded-full border-2 focus:outline-none transition-all duration-200 ${
-                            selectedColor === prod.color
-                              ? "border-color-hover scale-110 z-10"
-                              : "border-gray-300 hover:scale-105"
-                          }`}
+                          className={`w-10 h-10 md:w-12 md:h-12 rounded-full transition-all duration-200 ${selectedColor === prod.color
+                              ? "ring-2 ring-offset-2 ring-gray-900"
+                              : "ring-1 ring-gray-200 hover:ring-gray-400 hover:scale-110"
+                            }`}
                           style={{ backgroundColor: prod.color }}
                           onClick={() => handleColorClick(prod)}
                         />
@@ -222,18 +224,16 @@ const ProductDetail = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="m-4 flex justify-center mt-8 md:pt-16"
+                  className="pt-8"
                 >
                   <a
                     href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-3 md:px-10 md:py-5 bg-green-500 text-white font-semibold rounded-full shadow-md hover:bg-green-600 transition duration-300 w-full max-w-sm md:max-w-lg md:h-20"
+                    className="inline-flex items-center justify-center w-full px-8 py-4 bg-green-500 text-white text-sm font-medium tracking-widest uppercase hover:bg-green-600 transition-colors duration-300"
                   >
-                    <FaWhatsapp style={{ color: "#ffffff", fontSize: "30px" }} className="mr-3" />
-                    <span className="text-lg md:text-2xl">
-                      Contactar por WhatsApp
-                    </span>
+                    <FaWhatsapp className="mr-3 text-2xl" />
+                    Contactar por WhatsApp
                   </a>
                 </motion.div>
               </motion.div>
@@ -245,7 +245,7 @@ const ProductDetail = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="p-6 border-t border-gray-200"
+              className="py-12 border-t border-gray-200"
             >
               <SeccionExpandible
                 titulo="Características"
@@ -267,10 +267,10 @@ const ProductDetail = () => {
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
-            <ProductRecomendado 
-              productos={productosRelacionados} 
-              categoria={producto.cod_categoria} 
-              modeloSeleccionado={producto.modelo} 
+            <ProductRecomendado
+              productos={productosRelacionados}
+              categoria={producto.cod_categoria}
+              modeloSeleccionado={producto.modelo}
               marca={producto.cod_marca}
               cod_producto={producto.cod_producto}
             />

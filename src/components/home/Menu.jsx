@@ -56,7 +56,7 @@ const Menu = () => {
   }, []);
 
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 py-6 px-4 bg-white">
       {items.map((item, index) => (
         <motion.div
           key={item.id}
@@ -64,38 +64,38 @@ const Menu = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, delay: index * 0.1, ease: "easeInOut" }}
-          className="relative flex items-center justify-center h-80 text-white text-center rounded-lg overflow-hidden shadow-lg hover:shadow-md transition-all duration-300 transform hover:scale-101"
+          className="group relative flex items-center justify-center h-96 md:h-[500px] text-white text-center overflow-hidden border border-gray-200 transition-all duration-300"
         >
           {/* Placeholder de carga */}
           {!imagesLoaded && (
-            <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+            <div className="absolute inset-0 bg-gray-100 animate-pulse"></div>
           )}
 
           {/* Imagen */}
           {imagesLoaded && (
-            <div 
-              className="absolute inset-0 w-full h-full"
+            <div
+              className="absolute inset-0 w-full h-full transition-transform duration-500 group-hover:scale-105"
               style={{
                 backgroundImage: `url(${item.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center"
               }}
             >
-              <div className="absolute inset-0 bg-black bg-opacity-25"></div>
+              <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition-all duration-300"></div>
             </div>
           )}
 
           {/* Contenido del cuadro */}
-          <div className="relative z-10 p-6">
-            <h2 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-2xl md:text-4xl font-bold mb-4">
+          <div className="relative z-10 p-8 max-w-lg">
+            <h2 className="text-2xl md:text-4xl font-light tracking-widest uppercase mb-6">
               {item.title}
             </h2>
-            <p className="text-base md:text-lg mb-6">
+            <p className="text-sm md:text-base font-light tracking-wide mb-8 leading-relaxed">
               {item.description}
             </p>
             {item.link && (
               <Link to={item.link}>
-                <button className="px-6 py-2 bg-white text-black font-semibold rounded-lg shadow-md hover:bg-gray-200 transition duration-300">
+                <button className="px-8 py-3 bg-white text-black text-sm font-medium tracking-widest uppercase hover:bg-gray-100 transition-colors duration-300">
                   Ver más
                 </button>
               </Link>

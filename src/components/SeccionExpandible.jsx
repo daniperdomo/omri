@@ -11,12 +11,11 @@ const SeccionExpandible = ({ titulo, contenido }) => {
     <Disclosure>
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex justify-between w-full py-4 text-lg font-semibold text-gray-900 hover:text-gray-700 focus:outline-none transition-colors duration-200">
+          <Disclosure.Button className="flex justify-between w-full py-6 text-sm font-light tracking-wide uppercase text-gray-900 hover:text-gray-600 focus:outline-none transition-colors duration-200 border-b border-gray-200">
             <span>{titulo}</span>
             <svg
-              className={`${
-                open ? "transform rotate-180" : ""
-              } w-6 h-6 text-gray-500 hover:text-gray-700 transition-transform duration-200`}
+              className={`${open ? "transform rotate-180" : ""
+                } w-5 h-5 text-gray-400 transition-transform duration-200`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -25,7 +24,7 @@ const SeccionExpandible = ({ titulo, contenido }) => {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={1.5}
                 d="M19 9l-7 7-7-7"
               />
             </svg>
@@ -37,20 +36,23 @@ const SeccionExpandible = ({ titulo, contenido }) => {
               <Disclosure.Panel
                 static
                 as={motion.div}
-                initial={{ opacity: 0, height: 0 }} // Estado inicial: invisible y sin altura
-                animate={{ opacity: 1, height: "auto" }} // Estado final: visible y con altura automática
-                exit={{ opacity: 0, height: 0 }} // Estado al cerrar: invisible y sin altura
-                transition={{ duration: 0.3, ease: "easeInOut" }} // Duración y tipo de transición
-                className="text-gray-700 text-lg overflow-hidden"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="text-gray-700 text-base leading-relaxed overflow-hidden py-6 border-b border-gray-200"
               >
                 {lineas.length > 0 ? (
-                  <ul className="list-disc pl-6 space-y-2">
+                  <ul className="space-y-3 pl-0">
                     {lineas.map((linea, index) => (
-                      <li key={index}>{linea}</li>
+                      <li key={index} className="flex items-start">
+                        <span className="mr-3 text-gray-400">•</span>
+                        <span>{linea}</span>
+                      </li>
                     ))}
                   </ul>
                 ) : (
-                  <p>No hay información disponible.</p>
+                  <p className="text-gray-500">No hay información disponible.</p>
                 )}
               </Disclosure.Panel>
             )}

@@ -19,10 +19,10 @@ const Servicios = () => {
   ];
 
   return (
-    <div className="w-full py-12 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="w-full py-8 px-4 bg-white border-t border-gray-200">
+      <div className="mx-auto">
         {/* Contenedor de servicios */}
-        <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
           {servicios.map((servicio, index) => (
             <React.Fragment key={servicio.id}>
               {/* Contenido del servicio */}
@@ -30,21 +30,18 @@ const Servicios = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: index * 0.1, 
-                  ease: "easeInOut" 
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
+                  ease: "easeInOut"
                 }}
-                className="text-center w-full md:w-auto"
+                className="text-center w-full md:w-auto max-w-md"
                 onViewportEnter={() => setInView(true)}
               >
-                <h3 
-                  style={{ fontFamily: 'Amblas, sans-serif' }} 
-                  className="text-2xl md:text-3xl font-bold text-gray-900 mb-4"
-                >
+                <h3 className="text-2xl md:text-3xl font-light tracking-widest uppercase text-gray-900 mb-4">
                   {servicio.title}
                 </h3>
-                <p className="text-base md:text-lg text-gray-600 px-4 md:px-0">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                   {servicio.description}
                 </p>
               </motion.div>
@@ -52,12 +49,12 @@ const Servicios = () => {
               {/* Separador optimizado */}
               {index < servicios.length - 1 && (
                 <>
-                  <div className="w-60 h-1 bg-black my-6 md:hidden"></div>
-                  <motion.div 
-                    className="h-24 w-1 bg-black mx-4 hidden md:block"
+                  <div className="w-40 h-px bg-gray-300 my-8 md:hidden"></div>
+                  <motion.div
+                    className="h-32 w-px bg-gray-300 hidden md:block"
                     initial={{ scaleY: 0 }}
                     animate={inView ? { scaleY: 1 } : {}}
-                    transition={{ 
+                    transition={{
                       duration: 0.5,
                       delay: 0.3 + (index * 0.1),
                       ease: "easeInOut"

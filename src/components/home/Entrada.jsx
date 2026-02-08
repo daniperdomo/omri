@@ -64,12 +64,12 @@ const Entrada = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={controls}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="flex justify-center items-center w-full pt-4 px-4 bg-gray-100"
+      className="flex justify-center items-center w-full py-6 px-4 bg-white"
     >
-      <div className="w-full h-80 md:h-96 relative rounded-lg overflow-hidden shadow-lg">
+      <div className="w-full h-96 md:h-[500px] relative overflow-hidden border border-gray-200">
         {/* Mostrar placeholder de carga */}
         {!lowResLoaded && (
-          <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+          <div className="absolute inset-0 bg-gray-100 animate-pulse"></div>
         )}
 
         {/* Mostrar imagen de baja resolución primero */}
@@ -83,7 +83,7 @@ const Entrada = () => {
               filter: "blur(2px)"
             }}
           >
-            <div className="absolute inset-0 bg-black bg-opacity-25"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
           </div>
         )}
 
@@ -97,12 +97,12 @@ const Entrada = () => {
               backgroundPosition: "center",
             }}
           >
-            <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center">
-              <div className="text-center text-white px-4">
-                <h1 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-3xl md:text-4xl font-bold">
+            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+              <div className="text-center text-white px-6 max-w-3xl">
+                <h1 className="text-3xl md:text-5xl font-light tracking-widest uppercase mb-4">
                   {slide.title}
                 </h1>
-                <p className="mt-2 text-lg md:text-xl">
+                <p className="text-base md:text-lg font-light tracking-wide">
                   {slide.subtitle}
                 </p>
               </div>

@@ -37,36 +37,36 @@ const Nosotros = () => {
   setupObserver(ref3, controls3);
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-white">
       {/* Sección: Sobre nosotros */}
       <motion.div
         ref={ref1}
         initial={{ opacity: 0, y: 50 }}
         animate={controls1}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="max-w-7xl mx-auto py-4 md:py-8 px-6"
+        className="max-w-[1600px] mx-auto py-12 md:py-16 px-4 md:px-8"
       >
-        <div className="flex flex-col md:flex-row items-center gap-8">
-          <div className="w-full md:w-3/5 flex flex-col justify-center bg-white p-8 rounded-xl shadow-lg">
-            <h1 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="flex flex-col justify-center">
+            <h1 className="text-4xl md:text-5xl font-light tracking-widest uppercase text-gray-900 mb-8">
               Sobre nosotros
             </h1>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4">
-              En Omri, les ofrecemos productos originales y de alta calidad a 
+            <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6">
+              En Omri, les ofrecemos productos originales y de alta calidad a
               nuestros clientes.
             </p>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+            <p className="text-base md:text-lg text-gray-700 leading-relaxed">
               Nuestra misión es proporcionarte productos y servicios de primer nivel, asegurándonos
               de superar tus expectativas a través de dedicación, responsabilidad y compromiso.
             </p>
           </div>
-          <div className="w-full md:w-2/5 h-[300px] bg-gray-200 rounded-xl overflow-hidden shadow-lg flex items-center justify-center">
+          <div className="w-full h-[400px] md:h-[500px] bg-gray-50 border border-gray-200 overflow-hidden flex items-center justify-center">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+              <div className="absolute inset-0 bg-gray-100 animate-pulse"></div>
             )}
-            <img 
-              src="/images/home/slider/prueba2.webp" 
-              alt="Imagen de prueba" 
+            <img
+              src="/images/home/slider/prueba2.webp"
+              alt="Imagen de prueba"
               className={`w-full h-full object-cover ${!imageLoaded ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}
               loading="lazy"
               decoding="async"
@@ -81,11 +81,11 @@ const Nosotros = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={controls2}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeInOut" }}
-        className="max-w-7xl mx-auto py-4 md:py-8 px-6"
+        className="max-w-[1600px] mx-auto py-12 md:py-16 px-4 md:px-8 border-t border-gray-200"
       >
-        <div className="flex flex-col md:flex-row items-center gap-8">
-          <div className="w-full md:w-2/5 h-[350px] rounded-xl overflow-hidden shadow-lg relative">
-            <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="w-full h-[400px] md:h-[500px] border border-gray-200 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gray-100 animate-pulse"></div>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.0862411170915!2d-62.74109972520414!3d8.294216300058196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcbf9004d86854b%3A0x829d7dfed2ee8119!2sOmri!5e0!3m2!1ses!2sve!4v1742064143508!5m2!1ses!2sve"
               width="100%"
@@ -98,20 +98,20 @@ const Nosotros = () => {
               className="relative z-10"
             />
           </div>
-          <div className="w-full md:w-3/5 flex flex-col justify-center bg-white p-8 rounded-xl shadow-lg">
-            <h3 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Ubicacion
+          <div className="flex flex-col justify-center">
+            <h3 className="text-4xl md:text-5xl font-light tracking-widest uppercase text-gray-900 mb-8">
+              Ubicación
             </h3>
-            <p className="text-lg md:text-xl text-gray-700 mb-4">
-              Santo Tomé IV, Piso I, local 01. <br /> 
+            <p className="text-base md:text-lg text-gray-700 mb-6">
+              Santo Tomé IV, Piso I, local 01. <br />
               Ciudad Guayana, Venezuela
             </p>
-            <p className="text-lg md:text-xl text-gray-700 mb-4">
-              Horario de atención: <br />
+            <p className="text-base md:text-lg text-gray-700 mb-6">
+              <span className="text-sm font-light tracking-wide uppercase text-gray-500 block mb-2">Horario de atención</span>
               Lunes a Sábado de 9:00am a 7:00pm <br />
               Domingo: 10:00am a 5:00pm
             </p>
-            <p className="text-lg md:text-xl text-gray-700">
+            <p className="text-base md:text-lg text-gray-900 font-medium">
               ¡Visítanos!
             </p>
           </div>
@@ -124,7 +124,7 @@ const Nosotros = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={controls3}
         transition={{ duration: 0.5, delay: 0.4, ease: "easeInOut" }}
-        className="max-w-7xl mx-auto py-4 md:py-8 px-6 pb-8 md:pb-12"
+        className="max-w-[1600px] mx-auto py-12 md:py-16 px-4 md:px-8 border-t border-gray-200"
       >
         <Faq />
       </motion.div>
