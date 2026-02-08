@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, memo } from "react";
+import React, { useState, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ProductCard = memo(({ product, allProducts }) => {
@@ -7,12 +7,11 @@ const ProductCard = memo(({ product, allProducts }) => {
   );
   const [availability, setAvailability] = useState(product.cantidad > 0);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-  const [shouldScroll, setShouldScroll] = useState(false);
   const navigate = useNavigate();
-  const textRef = useRef(null);
 
   // Manejar el cambio de imagen al seleccionar un color
-  const handleColorClick = useCallback((image, quantity, index) => {
+  const handleColorClick = useCallback((image, quantity, index, e) => {
+    e.stopPropagation();
     setCurrentImage(image);
     setAvailability(quantity > 0);
     setSelectedColorIndex(index);
@@ -32,74 +31,79 @@ const ProductCard = memo(({ product, allProducts }) => {
     product.cod_categoria === "MEP" ||
     product.cod_categoria === "UNI";
 
-  // Efecto para verificar si el texto excede el ancho disponible
-  useEffect(() => {
-    if (textRef.current) {
-      const textElement = textRef.current;
-      const isOverflowing = textElement.scrollWidth > textElement.clientWidth;
-      setShouldScroll(isOverflowing);
-    }
-  }, [product.nombre]);
-
   return (
     <div
-      className="group bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer border-2 border-gray-200 hover:border-color-hover"
+      className="group relative bg-white overflow-hidden cursor-pointer"
       onClick={handleCardClick}
     >
-      {/* Contenedor de tamaño fijo para la imagen */}
-      <div className="w-full h-64 overflow-hidden p-2">
+      {/* Imagen full-bleed con overlay */}
+      <div className="relative aspect-square overflow-hidden bg-gray-50">
         {currentImage ? (
-          <img
-            src={currentImage}
-            alt={product.nombre}
-            className="w-full h-full object-contain"
-            loading="lazy"
-            decoding="async"
-          />
+          <>
+            <img
+              src={currentImage}
+              alt={product.nombre}
+              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+              loading="lazy"
+              decoding="async"
+            />
+            {/* Overlay oscuro en hover */}
+            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+
+            {/* Badge de disponibilidad */}
+            <div className="absolute top-4 left-4">
+              {availability ? (
+                <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-gray-900 shadow-sm">
+                  Disponible
+                </span>
+              ) : (
+                <span className="px-3 py-1 bg-gray-900/90 backdrop-blur-sm rounded-full text-xs font-medium text-white shadow-sm">
+                  Solicítalo
+                </span>
+              )}
+            </div>
+
+            {/* Botón "VER DETALLES" en hover */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <button className="px-8 py-3 bg-white text-black text-sm font-medium tracking-widest uppercase hover:bg-gray-100 transition-colors duration-200">
+                Ver Detalles
+              </button>
+            </div>
+          </>
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-500">No hay imagen disponible</span>
+          <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+            <span className="text-gray-400 text-sm">Sin imagen</span>
           </div>
         )}
       </div>
 
-      <div className="p-4">
+      {/* Información del producto */}
+      <div className="p-6 space-y-3">
         {/* Nombre del producto */}
-        <div className="overflow-hidden">
-          <h3
-            ref={textRef}
-            className={`text-lg font-bold text-gray-900 whitespace-nowrap overflow-hidden ${shouldScroll ? "group-hover:animate-scroll-text group-hover:text-clip group-hover:overflow-visible" : ""
-              }`}
-          >
-            {product.nombre}
-          </h3>
-        </div>
+        <h3 className="text-sm font-light tracking-widest uppercase text-gray-900 truncate">
+          {product.nombre}
+        </h3>
 
         {/* Precio (oculto si es MEP, HEP o UNI) */}
         {!(product.cod_categoria === "MEP" || product.cod_categoria === "HEP" || product.cod_categoria === "UNI") && (
-          <p className="text-gray-700">${product.precio.toFixed(2)}</p>
+          <p className="text-lg font-medium text-gray-900">
+            ${product.precio.toFixed(2)}
+          </p>
         )}
 
-        {/* Disponibilidad */}
-        {availability ? (
-          <span className="text-sm font-semibold text-green-600">Disponible</span>
-        ) : (
-          <span className="text-sm font-semibold text-red-600">¡Solicítalo!</span>
-        )}
-
-        {/* Círculos de colores (solo si no es un accesorio) */}
-        {!isAccesorio && (
-          <div className="flex space-x-2 mt-2">
+        {/* Selector de colores mejorado (solo si no es un accesorio) */}
+        {!isAccesorio && allProducts.length > 1 && (
+          <div className="flex gap-2 pt-2">
             {allProducts.map((otherProduct, index) => (
               <button
                 key={index}
-                className={`w-6 h-6 rounded-full border-2 focus:outline-none ${index === selectedColorIndex ? "border-color-hover shadow-lg" : "border-gray-300"
+                className={`w-8 h-8 rounded-full transition-all duration-200 hover:scale-110 ${index === selectedColorIndex
+                    ? "ring-2 ring-offset-2 ring-gray-900"
+                    : "ring-1 ring-gray-200 hover:ring-gray-300"
                   }`}
                 style={{ backgroundColor: otherProduct.color }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad, index);
-                }}
+                onClick={(e) => handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad, index, e)}
+                aria-label={`Color ${index + 1}`}
               />
             ))}
           </div>

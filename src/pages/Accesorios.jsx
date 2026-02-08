@@ -85,47 +85,47 @@ const Accesorios = () => {
   };
 
   // Calcular si todas las imágenes de categorías están cargadas
-  const allCategoryImagesLoaded = imagesLoaded && 
+  const allCategoryImagesLoaded = imagesLoaded &&
     categoriasAccesorios.every(category => loadedImages[category.id]);
 
   return (
-    <div className="py-8 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-gray-900">Accesorios</h1>
+    <div className="py-12 bg-white">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
+        {/* Header más limpio */}
+        <header className="text-center mb-16">
+          <h1 className="text-4xl font-light tracking-widest uppercase text-gray-900">Accesorios</h1>
         </header>
 
-        <h2 style={{ fontFamily: 'Amblas, sans-serif' }} className="text-2xl text-gray-700 mb-6 text-left">Categorías</h2>
+        {/* Título de categorías */}
+        <h2 className="text-sm font-light tracking-widest uppercase text-gray-900 mb-8">Categorías</h2>
 
-        {/* Contenedor de categorías con placeholders de carga */}
-        <div className="overflow-x-auto scrollbar-hide whitespace-nowrap mb-12 lg:overflow-x-visible lg:whitespace-normal">
-          <div className="inline-flex space-x-4 lg:flex lg:flex-nowrap lg:space-x-4">
+        {/* Contenedor de categorías modernizado */}
+        <div className="overflow-x-auto scrollbar-hide mb-16">
+          <div className="flex gap-4 lg:gap-6 flex-nowrap">
             {categoriasAccesorios.map((category) => (
               <button
                 key={category.id}
                 onClick={() => handleCategoriaClick(category.cod_categoria)}
-                className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                  categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover" : ""
-                }`}
-                disabled={!loadedImages[category.id]} // Deshabilitar botón mientras carga
+                className={`group flex-none w-32 h-32 md:w-40 md:h-40 relative overflow-hidden transition-all duration-300 ${categoriaSeleccionada === category.cod_categoria ? "ring-2 ring-gray-900" : ""
+                  }`}
+                disabled={!loadedImages[category.id]}
               >
                 {!loadedImages[category.id] && (
-                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                  <div className="absolute inset-0 bg-gray-100 animate-pulse" />
                 )}
                 <img
                   src={category.image}
                   alt={category.title}
-                  className={`w-full h-full object-cover transition-opacity duration-300 ${
-                    !loadedImages[category.id] ? "opacity-0" : "opacity-100"
-                  }`}
+                  className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${!loadedImages[category.id] ? "opacity-0" : "opacity-100"
+                    }`}
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-center">
-                  <h3 
-                    style={{ fontFamily: 'Amblas, sans-serif' }} 
-                    className="text-sm md:text-lg font-bold text-white text-center"
-                  >
+                {/* Overlay en hover */}
+                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                {/* Título */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                  <h3 className="text-xs md:text-sm font-light tracking-widest uppercase text-white text-center">
                     {category.title}
                   </h3>
                 </div>
@@ -134,16 +134,16 @@ const Accesorios = () => {
           </div>
         </div>
 
-        {/* Filtros */}
-        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
-          <h2 className="text-xl text-gray-700">Filtrar por:</h2>
+        {/* Filtros modernizados */}
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 pb-8 border-b border-gray-200">
+          <h2 className="text-sm font-light tracking-widest uppercase text-gray-900">Filtrar por:</h2>
 
           <select
             value={categoriaSeleccionada}
             onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-            className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            className="w-full md:w-40 h-11 bg-white border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors px-4 text-sm"
           >
-            <option value="">Categoría</option>
+            <option value="">Todas las categorías</option>
             {categoriasAccesorios.map((category) => (
               <option key={category.cod_categoria} value={category.cod_categoria}>
                 {category.title}
@@ -154,9 +154,9 @@ const Accesorios = () => {
           <select
             value={marcaSeleccionada}
             onChange={(e) => setMarcaSeleccionada(e.target.value)}
-            className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            className="w-full md:w-32 h-11 bg-white border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors px-4 text-sm"
           >
-            <option value="">Marca</option>
+            <option value="">Todas las marcas</option>
             {marcasUnicas.map((marca) => (
               <option key={marca} value={marca}>
                 {marca}
@@ -164,22 +164,22 @@ const Accesorios = () => {
             ))}
           </select>
 
-          <div className="flex space-x-2">
+          <div className="flex gap-3">
             <input
               type="number"
-              placeholder="$-Min"
+              placeholder="Precio mín."
               value={precioMin}
               onChange={(e) => setPrecioMin(e.target.value)}
               min="0"
-              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+              className="w-28 h-11 bg-white border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors px-4 text-sm"
             />
             <input
               type="number"
-              placeholder="$-Max"
+              placeholder="Precio máx."
               value={precioMax}
               onChange={(e) => setPrecioMax(e.target.value)}
               min="0"
-              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+              className="w-28 h-11 bg-white border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors px-4 text-sm"
             />
           </div>
         </div>

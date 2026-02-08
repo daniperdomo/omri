@@ -47,7 +47,7 @@ const ProductGrid = memo(({ productos }) => {
   return (
     <div>
       {/* Grid de productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {Object.keys(productosAgrupados).map((key) => {
           const productosDelGrupo = productosAgrupados[key];
           const primerProducto = productosDelGrupo[0];
@@ -64,7 +64,7 @@ const ProductGrid = memo(({ productos }) => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 1, ease: "easeOut" }}
             >
               <ProductCard
                 product={productoConImagenesOrdenadas}
