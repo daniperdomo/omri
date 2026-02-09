@@ -1,41 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { useImagePreloader } from "../../hooks/useImagePreloader";
 import '../../styles/styles.css';
 
 const Entrada = () => {
   const controls = useAnimation();
   const ref = useRef(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [lowResLoaded, setLowResLoaded] = useState(false);
 
   const slide = {
     id: 1,
     title: "¡Bienvenido a la web de Omri!",
     subtitle: "Consulta la disponibilidad e información de todos los productos.",
     image: "/images/home/slider/prueba2.webp",
-    lowResImage: "/images/home/slider/prueba2-lowres.webp" // Añade una versión baja resolución
+    lowResImage: "/images/home/slider/prueba2-lowres.webp"
   };
 
-  // Precargar la imagen
-  useEffect(() => {
-    const img = new Image();
-    img.src = slide.image;
-    img.onload = () => {
-      setImageLoaded(true);
-    };
+  // Usar el hook de precarga de imágenes
+  const { loadedImages } = useImagePreloader([
+    { id: 'main', image: slide.image },
+    { id: 'lowRes', image: slide.lowResImage }
+  ]);
 
-    // Precargar también la imagen de baja resolución
-    const lowResImg = new Image();
-    lowResImg.src = slide.lowResImage;
-    lowResImg.onload = () => {
-      setLowResLoaded(true);
-    };
-
-    return () => {
-      img.onload = null;
-      lowResImg.onload = null;
-    };
-  }, [slide.image, slide.lowResImage]);
+  const imageLoaded = loadedImages['main'];
+  const lowResLoaded = loadedImages['lowRes'];
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -1,5 +1,6 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { isAccessoryCategory, shouldShowPrice } from "../utils/constants";
 
 const ProductCard = memo(({ product, allProducts }) => {
   const [currentImage, setCurrentImage] = useState(
@@ -22,14 +23,11 @@ const ProductCard = memo(({ product, allProducts }) => {
     navigate(`/producto/${product.cod_producto}`);
   }, [navigate, product.cod_producto]);
 
-  // Verificar si el producto pertenece a las categorías de accesorios
-  const isAccesorio =
-    product.cod_categoria === "CARG" ||
-    product.cod_categoria === "CABL" ||
-    product.cod_categoria === "AUDIF" ||
-    product.cod_categoria === "HEP" ||
-    product.cod_categoria === "MEP" ||
-    product.cod_categoria === "UNI";
+  // Verificar si el producto pertenece a las categorías de accesorios (memoizado)
+  const isAccesorio = useMemo(
+    () => isAccessoryCategory(product.cod_categoria),
+    [product.cod_categoria]
+  );
 
   return (
     <div
@@ -84,8 +82,8 @@ const ProductCard = memo(({ product, allProducts }) => {
           {product.nombre}
         </h3>
 
-        {/* Precio (oculto si es MEP, HEP o UNI) */}
-        {!(product.cod_categoria === "MEP" || product.cod_categoria === "HEP" || product.cod_categoria === "UNI") && (
+        {/* Precio (oculto si no debe mostrarse) */}
+        {shouldShowPrice(product.cod_categoria) && (
           <p className="text-lg font-medium text-gray-900">
             ${product.precio.toFixed(2)}
           </p>
@@ -98,8 +96,8 @@ const ProductCard = memo(({ product, allProducts }) => {
               <button
                 key={index}
                 className={`w-8 h-8 rounded-full transition-all duration-200 hover:scale-110 ${index === selectedColorIndex
-                    ? "ring-2 ring-offset-2 ring-gray-900"
-                    : "ring-1 ring-gray-200 hover:ring-gray-300"
+                  ? "ring-2 ring-offset-2 ring-gray-900"
+                  : "ring-1 ring-gray-200 hover:ring-gray-300"
                   }`}
                 style={{ backgroundColor: otherProduct.color }}
                 onClick={(e) => handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad, index, e)}

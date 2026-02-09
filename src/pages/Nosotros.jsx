@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import Faq from '../components/Faq';
 import '../styles/styles.css';
@@ -20,21 +20,27 @@ const Nosotros = () => {
     return () => { img.onload = null; };
   }, []);
 
-  // Observers simplificados
-  const setupObserver = (ref, controls) => {
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => entry.isIntersecting && controls.start({ opacity: 1, y: 0 }),
-        { threshold: 0.15 }
-      );
-      if (ref.current) observer.observe(ref.current);
-      return () => { if (ref.current) observer.unobserve(ref.current); };
-    }, [controls]);
-  };
+  // Observer unificado para todas las secciones
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === ref1.current) controls1.start({ opacity: 1, y: 0 });
+            if (entry.target === ref2.current) controls2.start({ opacity: 1, y: 0 });
+            if (entry.target === ref3.current) controls3.start({ opacity: 1, y: 0 });
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
 
-  setupObserver(ref1, controls1);
-  setupObserver(ref2, controls2);
-  setupObserver(ref3, controls3);
+    [ref1, ref2, ref3].forEach((ref) => {
+      if (ref.current) observer.observe(ref.current);
+    });
+
+    return () => observer.disconnect();
+  }, [controls1, controls2, controls3]);
 
   return (
     <div className="bg-white">

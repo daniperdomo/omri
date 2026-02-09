@@ -1,27 +1,26 @@
 import React, { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import ProductCard from "../components/ProductCard";
+import { isSpecialCategory } from "../utils/constants";
 
 const ProductGrid = memo(({ productos }) => {
-  // Función para determinar si la categoría es CARG, CABL o AUDIF
-  const isSpecialCategory = (cod_categoria) => {
-    return cod_categoria === "CARG" || cod_categoria === "CABL" || cod_categoria === "AUDIF" || cod_categoria === "HEP" || cod_categoria === "MEP" || cod_categoria === "UNI";
-  };
-
   // Memoize expensive computations
   const productosAgrupados = useMemo(() => {
     // Ordenar los productos
     const productosOrdenados = [...productos].sort((a, b) => {
-      if (isSpecialCategory(a.cod_categoria) && isSpecialCategory(b.cod_categoria)) {
+      const aEsEspecial = isSpecialCategory(a.cod_categoria);
+      const bEsEspecial = isSpecialCategory(b.cod_categoria);
+
+      if (aEsEspecial && bEsEspecial) {
         // Si ambos son de categorías especiales, ordenar por cod_marca y luego por cod_producto
         if (a.cod_marca < b.cod_marca) return -1;
         if (a.cod_marca > b.cod_marca) return 1;
         return a.cod_producto.localeCompare(b.cod_producto, undefined, { numeric: true, sensitivity: 'base' });
       }
       // Si solo a es de categoría especial
-      if (isSpecialCategory(a.cod_categoria)) return -1;
+      if (aEsEspecial) return -1;
       // Si solo b es de categoría especial
-      if (isSpecialCategory(b.cod_categoria)) return 1;
+      if (bEsEspecial) return 1;
       // Si ninguno es de categoría especial, ordenar solo por cod_producto
       return a.cod_producto.localeCompare(b.cod_producto, undefined, { numeric: true, sensitivity: 'base' });
     });
