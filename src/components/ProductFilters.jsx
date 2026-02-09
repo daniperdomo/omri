@@ -25,7 +25,7 @@ const ProductFilters = memo(({
 }) => {
     return (
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12 pb-8 border-b border-gray-200">
-            <h2 className="text-sm font-light tracking-widest uppercase text-gray-900">
+            <h2 className="text-sm font-normal tracking-widest uppercase text-gray-500">
                 Filtrar por:
             </h2>
 
