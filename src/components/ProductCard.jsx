@@ -35,13 +35,13 @@ const ProductCard = memo(({ product, allProducts }) => {
       onClick={handleCardClick}
     >
       {/* Imagen full-bleed con overlay */}
-      <div className="relative aspect-square overflow-hidden bg-gray-50">
+      <div className="relative aspect-square overflow-hidden bg-white">
         {currentImage ? (
           <>
             <img
               src={currentImage}
               alt={product.nombre}
-              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+              className="w-full h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
               loading="lazy"
               decoding="async"
             />

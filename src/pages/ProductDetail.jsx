@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PantallaCarga from "../components/PantallaCarga";
 import ProductRecomendado from "../components/ProductRecomendado";
 import SeccionExpandible from "../components/SeccionExpandible";
+import { isAccessoryCategory, shouldShowPrice } from "../utils/constants";
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
@@ -16,14 +17,7 @@ const ProductDetail = () => {
   const [availability, setAvailability] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
 
-  const isAccesorio = producto && (
-    producto.cod_categoria === "CARG" ||
-    producto.cod_categoria === "CABL" ||
-    producto.cod_categoria === "HEP" ||
-    producto.cod_categoria === "MEP" ||
-    producto.cod_categoria === "UNI" ||
-    producto.cod_categoria === "AUDIF"
-  );
+  const isAccesorio = producto && isAccessoryCategory(producto.cod_categoria);
 
   useEffect(() => {
     fetch(`/api/productos/${cod_producto}`)
@@ -119,8 +113,8 @@ const ProductDetail = () => {
                       <button
                         key={index}
                         className={`flex-shrink-0 w-20 h-20 border focus:outline-none transition-all duration-200 ${currentImage === img.url
-                            ? "border-gray-900 ring-2 ring-gray-900 ring-offset-2"
-                            : "border-gray-200 hover:border-gray-400"
+                          ? "border-gray-900 ring-2 ring-gray-900 ring-offset-2"
+                          : "border-gray-200 hover:border-gray-400"
                           }`}
                         onClick={() => setCurrentImage(img.url)}
                       >
@@ -134,7 +128,7 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                <div className="w-full max-w-[700px] h-[400px] md:h-[700px] flex justify-center items-center border border-gray-200 overflow-hidden bg-gray-50">
+                <div className="w-full max-w-[700px] h-[400px] md:h-[700px] flex justify-center items-center border border-gray-200 overflow-hidden bg-white">
                   <img
                     src={currentImage}
                     alt={producto.nombre}
@@ -148,8 +142,8 @@ const ProductDetail = () => {
                       <button
                         key={index}
                         className={`flex-shrink-0 w-16 h-16 border focus:outline-none transition-colors duration-200 ${currentImage === img.url
-                            ? "border-gray-900"
-                            : "border-gray-200 hover:border-gray-400"
+                          ? "border-gray-900"
+                          : "border-gray-200 hover:border-gray-400"
                           }`}
                         onClick={() => setCurrentImage(img.url)}
                       >
@@ -174,8 +168,8 @@ const ProductDetail = () => {
               >
                 <h1 className="text-3xl md:text-4xl font-light tracking-widest uppercase text-gray-900">{producto.nombre}</h1>
 
-                {/* Precio (oculto si es MEP, HEP o UNI) */}
-                {!(producto.cod_categoria === "MEP" || producto.cod_categoria === "HEP" || producto.cod_categoria === "UNI") && (
+                {/* Precio */}
+                {shouldShowPrice(producto.cod_categoria) && (
                   <p className="text-3xl md:text-4xl font-medium text-gray-900">
                     ${producto.precio.toFixed(2)}
                   </p>
@@ -207,8 +201,8 @@ const ProductDetail = () => {
                         <button
                           key={index}
                           className={`w-10 h-10 md:w-12 md:h-12 rounded-full transition-all duration-200 ${selectedColor === prod.color
-                              ? "ring-2 ring-offset-2 ring-gray-900"
-                              : "ring-1 ring-gray-200 hover:ring-gray-400 hover:scale-110"
+                            ? "ring-2 ring-offset-2 ring-gray-900"
+                            : "ring-1 ring-gray-200 hover:ring-gray-400 hover:scale-110"
                             }`}
                           style={{ backgroundColor: prod.color }}
                           onClick={() => handleColorClick(prod)}
